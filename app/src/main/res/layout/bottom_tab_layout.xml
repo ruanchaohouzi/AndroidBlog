@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_tab_widget"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!--下面的tab标签布局-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp"
+        >
+
+        <LinearLayout
+            android:id="@+id/ll_menu_home_page"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_menu_home"
+                style="@style/bottomIconStyle"
+                android:src="@drawable/bottom_icon_home_selector" />
+
+            <TextView
+                android:id="@+id/tv_menu_home"
+                style="@style/bottomTextStyle"
+                android:text="首页" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_menu_nearby"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_menu_nearby"
+                style="@style/bottomIconStyle"
+                android:src="@drawable/bottom_icon_nearby_selector" />
+
+            <TextView
+                android:id="@+id/tv_menu_nearby"
+                style="@style/bottomTextStyle"
+                android:text="附近" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_menu_discover"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_menu_discover"
+                style="@style/bottomIconStyle"
+                android:src="@drawable/bottom_icon_discover_selector" />
+
+            <TextView
+                android:id="@+id/tv_menu_discover"
+                style="@style/bottomTextStyle"
+                android:text="发现" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_menu_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_menu_order"
+                style="@style/bottomIconStyle"
+                android:src="@drawable/bottom_icon_order_selector" />
+
+            <TextView
+                android:id="@+id/tv_menu_order"
+                style="@style/bottomTextStyle"
+                android:text="订单" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_menu_mine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_menu_mine"
+                style="@style/bottomIconStyle"
+                android:src="@drawable/bottom_icon_mine_selector" />
+
+            <TextView
+                android:id="@+id/tv_menu_mine"
+                style="@style/bottomTextStyle"
+                android:text="我的" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

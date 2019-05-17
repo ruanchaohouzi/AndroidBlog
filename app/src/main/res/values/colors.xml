@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="home_recycler_item_main_text_color">#000000</color>
+
+    <color name="home_recycler_item_second_text_color">#98000000</color>
+    <color name="color_translucent">#00000000</color>
+
+    <!-- title 半透明背景颜色 -->
+    <color name="color_home_title_bg">#6A000000</color>
+</resources>
