@@ -59,50 +59,9 @@ class HomeAdapter constructor(data: MutableList<HomeData>, context: Context): Re
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
 
         if (viewHolder is ProjectViewHolder) {
-            var mProjectViewHolder: ProjectViewHolder = viewHolder as ProjectViewHolder
-            var projectInfo: ProjectInfo = mHomeDataList!!.get(position).itemValue as ProjectInfo
-            mProjectViewHolder.mTitleView.setText(projectInfo.title)
-            mProjectViewHolder.mAuthor.setText(projectInfo.author)
-            mProjectViewHolder.mCategory.setText(projectInfo.superChapterName)
-            mProjectViewHolder.mNiceDate.setText(projectInfo.niceDate)
-            mProjectViewHolder?.itemViewLayout?.setOnClickListener(View.OnClickListener {
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener(position, projectInfo)
-                }
-            })
+            bindProjectViewHolder(viewHolder, position)
         }else if (viewHolder is BannerViewHolder){
-            var banners: List<BannerInfo> = mHomeDataList!!.get(position).itemValue as List<BannerInfo>;
-            var bannerViewHolder: BannerViewHolder = viewHolder as BannerViewHolder
-            var mHomeSlider = bannerViewHolder.mHomeSlider
-            for (name in banners){
-                val textSliderView = TextSliderView(mContext)
-                // initialize a SliderLayout
-                textSliderView
-                    .description(name.title)
-                    .image(name.imagePath)
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .setOnSliderClickListener(object: BaseSliderView.OnSliderClickListener{
-                        override fun onSliderClick(slider: BaseSliderView?) {
-
-                        }
-
-                    })
-                mHomeSlider.addSlider(textSliderView)
-            }
-            mHomeSlider.setPresetTransformer(SliderLayout.Transformer.Accordion)
-            mHomeSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom)
-            mHomeSlider.setCustomAnimation(DescriptionAnimation())
-            mHomeSlider.setDuration(4000)
-            mHomeSlider.addOnPageChangeListener(object : ViewPagerEx.OnPageChangeListener{
-                override fun onPageScrollStateChanged(state: Int) {
-                }
-
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                }
-
-                override fun onPageSelected(position: Int) {
-                }
-            })
+            bindBannerViewHolder(position, viewHolder)
         }
     }
 
@@ -126,6 +85,55 @@ class HomeAdapter constructor(data: MutableList<HomeData>, context: Context): Re
                 return ProjectViewHolder(view)
             }
         }
+    }
+
+    private fun bindProjectViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+        var mProjectViewHolder: ProjectViewHolder = viewHolder as ProjectViewHolder
+        var projectInfo: ProjectInfo = mHomeDataList!!.get(position).itemValue as ProjectInfo
+        mProjectViewHolder.mTitleView.setText(projectInfo.title)
+        mProjectViewHolder.mAuthor.setText(projectInfo.author)
+        mProjectViewHolder.mCategory.setText(projectInfo.superChapterName)
+        mProjectViewHolder.mNiceDate.setText(projectInfo.niceDate)
+        mProjectViewHolder?.itemViewLayout?.setOnClickListener(View.OnClickListener {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener(position, projectInfo)
+            }
+        })
+    }
+
+    private fun bindBannerViewHolder(position: Int, viewHolder: RecyclerView.ViewHolder) {
+        var banners: List<BannerInfo> = mHomeDataList!!.get(position).itemValue as List<BannerInfo>;
+        var bannerViewHolder: BannerViewHolder = viewHolder as BannerViewHolder
+        var mHomeSlider = bannerViewHolder.mHomeSlider
+        for (name in banners) {
+            val textSliderView = TextSliderView(mContext)
+            // initialize a SliderLayout
+            textSliderView
+                .description(name.title)
+                .image(name.imagePath)
+                .setScaleType(BaseSliderView.ScaleType.Fit)
+                .setOnSliderClickListener(object : BaseSliderView.OnSliderClickListener {
+                    override fun onSliderClick(slider: BaseSliderView?) {
+
+                    }
+
+                })
+            mHomeSlider.addSlider(textSliderView)
+        }
+        mHomeSlider.setPresetTransformer(SliderLayout.Transformer.Default)
+        mHomeSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom)
+//        mHomeSlider.setCustomAnimation(Default())
+        mHomeSlider.setDuration(4000)
+        mHomeSlider.addOnPageChangeListener(object : ViewPagerEx.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+            }
+        })
     }
 
     override fun getItemViewType(position: Int): Int {

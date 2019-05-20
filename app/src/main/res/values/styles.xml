@@ -26,5 +26,15 @@
         <item name="android:layout_marginTop">3dp</item>
     </style>
 
+    <!-- AppCompatActivity 全屏显示   -->
+    <style name="FullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 
 </resources>

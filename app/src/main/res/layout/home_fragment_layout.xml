@@ -16,7 +16,7 @@
                 android:id="@+id/mHomeToolbar"
                 android:background="@color/color_translucent"
                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
+                android:layout_height="wrap_content"
                 android:padding="10dp"
         >
             <RelativeLayout android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.ruanchao.mvpframe.Home
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -15,6 +16,7 @@ import com.ruanchao.mvpframe.BaseMvpFragment
 import com.ruanchao.mvpframe.R
 import com.ruanchao.mvpframe.adapter.HomeAdapter
 import com.ruanchao.mvpframe.bean.*
+import com.ruanchao.mvpframe.utils.StatusBarUtil
 import kotlinx.android.synthetic.main.home_fragment_layout.*
 
 class HomeFragment: BaseMvpFragment<IHomeView,HomePresenter>(), IHomeView {
@@ -35,6 +37,10 @@ class HomeFragment: BaseMvpFragment<IHomeView,HomePresenter>(), IHomeView {
     }
 
     private fun initView() {
+        //状态栏透明和间距处理
+        StatusBarUtil.darkMode(activity as Activity)
+        StatusBarUtil.setPaddingSmart(activity as Activity, mHomeToolbar)
+
         mHomeAdapter = HomeAdapter(homeDataList,activity as Context)
         projectRecyclerView.run {
             layoutManager = LinearLayoutManager(activity)

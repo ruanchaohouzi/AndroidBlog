@@ -10,5 +10,8 @@
     <color name="color_translucent">#00000000</color>
 
     <!-- title 半透明背景颜色 -->
-    <color name="color_home_title_bg">#6A000000</color>
+    <color name="color_home_title_bg">#01c1ae</color>
+
+    <color name="bottom_tab_text_click_color">#01c1ae</color>
+    <color name="bottom_tab_text_default_color">#666666</color>
 </resources>
