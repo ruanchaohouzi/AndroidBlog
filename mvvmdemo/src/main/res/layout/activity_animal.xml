@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable name="vm"
+                  type="com.ruanchao.mvvmdemo.viewmodel.AnimalViewModel"/>
+    </data>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:toast="@{vm.error}"
+            tools:context=".view.AnimalActivity">
+
+        <TextView
+                android:id="@+id/mTvCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{vm.shutCount}"
+        />
+
+        <Button
+                android:id="@+id/mBtnShout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="shout"
+                android:onClick="@{()->vm.shout()}"
+
+        />
+
+        <ProgressBar
+                android:id="@+id/loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="64dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/colorPrimary"
+                android:indeterminateTintMode="src_in"
+                app:visibleOrGone="@{vm.shouldLoading}"/>
+
+        <TextView
+                android:id="@+id/mProjectCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{vm.projectCount}"
+        />
+
+        <Button
+                android:id="@+id/mBtnGetProject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="getAllProjectByPage"
+                android:onClick="@{()->vm.getAllProjectByPage()}"
+
+        />
+
+        <ImageView
+                android:id="@+id/iv_image"
+                android:layout_width="match_parent"
+                   android:layout_height="100dp"
+                   android:scaleType="centerCrop"
+                   app:imageUrl="@{vm.imageUrl}"
+        />
+
+        <Button
+                android:id="@+id/mBtnLoadImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LoadImage"
+
+        />
+
+        <Button
+                android:id="@+id/mBtnInsert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="InsertUser"
+                android:onClick="@{()-> vm.insert()}"
+
+        />
+
+        <Button
+                android:id="@+id/mBtnGetUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="mBtnGetUser"
+                android:onClick="@{()-> vm.getUser()}"
+
+        />
+
+
+    </LinearLayout>
+
+
+</layout>

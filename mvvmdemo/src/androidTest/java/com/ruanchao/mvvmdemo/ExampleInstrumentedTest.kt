@@ -1,8 +1,7 @@
-package com.ruanchao.mvpframe
+package com.ruanchao.mvvmdemo
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
-import com.ruanchao.mvpframe.test.User
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,8 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.ruanchao.mvpframe", appContext.packageName)
+        assertEquals("com.ruanchao.mvvmdemo", appContext.packageName)
     }
-
-
 }
