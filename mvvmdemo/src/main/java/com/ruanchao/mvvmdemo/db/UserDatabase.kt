@@ -8,7 +8,6 @@ import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.migration.Migration
 
 
-
 @Database(entities = arrayOf(UserInfo::class), version = 1)
 abstract class UserDb : RoomDatabase() {
 

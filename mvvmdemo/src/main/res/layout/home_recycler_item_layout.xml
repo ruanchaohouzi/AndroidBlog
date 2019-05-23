@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable name="projectInfo" type="com.ruanchao.mvpframe.bean.ProjectInfo"/>
+    </data>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="vertical">
+        <TextView
+                android:id="@+id/tv_Author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/home_recycler_item_second_text_color"
+                android:textSize="@dimen/home_recycler_item_second_text_size"
+                android:text="@{projectInfo.author}"
+        />
+
+        <TextView
+                android:id="@+id/projectTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/home_recycler_item_main_text_size"
+                android:textColor="@color/home_recycler_item_main_text_color"
+                android:maxLines="2"
+                android:layout_marginTop="@dimen/home_recycler_item_margin_top"
+                android:text="@{projectInfo.title}"
+        />
+
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/home_recycler_item_margin_top"
+        >
+            <TextView
+                    android:id="@+id/tv_category_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/home_recycler_item_second_text_color"
+                    android:text="分类:"
+                    android:textSize="@dimen/home_recycler_item_second_text_size"
+            />
+            <TextView
+                    android:id="@+id/tv_category_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_category_name"
+                    android:textColor="@color/home_recycler_item_second_text_color"
+                    android:textSize="@dimen/home_recycler_item_second_text_size"
+                    android:text="@{projectInfo.superChapterName}"
+            />
+
+            <TextView
+                    android:id="@+id/tv_niceDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/home_recycler_item_second_text_color"
+                    android:textSize="@dimen/home_recycler_item_second_text_size"
+                    android:layout_alignParentRight="true"
+                    android:text="@{projectInfo.niceDate}"
+            />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</layout>

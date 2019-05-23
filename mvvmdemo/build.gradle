@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId "com.ruanchao.mvvmdemo"
-        minSdkVersion 20
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -76,4 +76,14 @@ dependencies {
     //glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    //agentVeb
+    implementation 'com.just.agentweb:agentweb:4.0.3-alpha@aar'
+
+    //banner
+    implementation "com.android.support:support-v4:+"
+    implementation 'com.squareup.picasso:picasso:2.3.2'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.daimajia.slider:library:1.1.5@aar'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
 }

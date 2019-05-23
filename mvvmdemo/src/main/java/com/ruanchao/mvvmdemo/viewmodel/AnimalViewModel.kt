@@ -1,5 +1,6 @@
 package com.ruanchao.mvvmdemo.viewmodel
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.databinding.BindingAdapter
@@ -17,6 +18,7 @@ import com.ruanchao.mvvmdemo.db.UserDao
 import com.ruanchao.mvvmdemo.db.UserDb
 import com.ruanchao.mvvmdemo.model.AnimalModel
 import com.ruanchao.mvvmdemo.utils.schedule
+import com.ruanchao.mvvmdemo.utils.set
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -35,12 +37,12 @@ class AnimalViewModel(val animal: Animal): ViewModel(){
         AnimalModel(userDao)
     }
 
-    //需要绑定的数据
-    val shutCount = ObservableField<String>("${animal.name}一共叫了${animal.shoutCount}声")
-    val projectCount = ObservableField<String>("projectCount:0")
-    val shouldLoading = ObservableBoolean(false)
-    val error = ObservableField<Throwable>()
-    val imageUrl = ObservableField<String>("https://static.fotor.com.cn/assets/projects/pages/59b42190-65a4-11e9-a7c3-fb5a346791c8_ce69c6d8-f32e-430f-a367-52d16d127c7e_thumb.jpg")
+    //需要绑定的数据  采取了LiveData
+    val shutCount = MutableLiveData<String>().set("${animal.name}一共叫了${animal.shoutCount}声")
+    val projectCount = MutableLiveData<String>().set("projectCount:0")
+    val shouldLoading = MutableLiveData<Boolean>().set(false)
+    val error = MutableLiveData<Throwable>()
+    val imageUrl = MutableLiveData<String>().set("https://static.fotor.com.cn/assets/projects/pages/59b42190-65a4-11e9-a7c3-fb5a346791c8_ce69c6d8-f32e-430f-a367-52d16d127c7e_thumb.jpg")
 
 
     //binding

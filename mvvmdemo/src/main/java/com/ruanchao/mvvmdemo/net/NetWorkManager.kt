@@ -19,7 +19,7 @@ class NetWorkManager private constructor(){
     val CACHE_MAX_SIZE: Long = 1024*1024*20
 
     companion object {
-        var mNetWorkManager: NetWorkManager? = null
+        private var mNetWorkManager: NetWorkManager? = null
         fun getInstance(): NetWorkManager {
 
             if (mNetWorkManager == null){

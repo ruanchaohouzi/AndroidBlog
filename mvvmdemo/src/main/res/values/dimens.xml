@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="home_recycler_item_margin_top">5dp</dimen>
+
+    <dimen name="home_recycler_item_main_text_size">14sp</dimen>
+
+    <dimen name="home_recycler_item_second_text_size">12sp</dimen>
+
+    <dimen name="home_recycler_item_foot_text_size">15sp</dimen>
+
+</resources>

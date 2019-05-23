@@ -1,10 +1,12 @@
 package com.ruanchao.mvvmdemo.utils
 
+import android.arch.lifecycle.MutableLiveData
 import android.databinding.BindingAdapter
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.daimajia.slider.library.SliderTypes.BaseSliderView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -45,8 +47,12 @@ var View.VisibleOrGone
         visibility = if (value) View.VISIBLE else View.GONE
     }
 
+fun <T> MutableLiveData<T>.set(t: T?): MutableLiveData<T>{
+    this.postValue(t) // or loading.setValue(false)
+    return this
+}
 
-
+fun <T> MutableLiveData<T>.get() = this.value
 
 
 
