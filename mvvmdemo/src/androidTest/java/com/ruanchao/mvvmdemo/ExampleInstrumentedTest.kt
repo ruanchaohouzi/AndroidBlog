@@ -2,6 +2,10 @@ package com.ruanchao.mvvmdemo
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
+import com.ruanchao.mvvmdemo.bean.BlogContent
+import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
+import io.reactivex.ObservableOnSubscribe
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,8 +21,7 @@ import org.junit.Assert.*
 class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.ruanchao.mvvmdemo", appContext.packageName)
+
+
     }
 }

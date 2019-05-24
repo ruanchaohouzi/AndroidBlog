@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.LinearLayout
 import com.just.agentweb.AgentWeb
 import com.ruanchao.mvvmdemo.R
@@ -27,11 +28,13 @@ class BlogDetailActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        var url = intent.getStringExtra(BLOG_DETAIL_URL)
+        Log.i("BlogDetailActivity", url)
         AgentWeb.with(this)
             .setAgentWebParent(ll_blog_web,LinearLayout.LayoutParams(-1,-1))
             .useDefaultIndicator()
             .createAgentWeb()
             .ready()
-            .go(intent.getStringExtra(BLOG_DETAIL_URL))
+            .go(url)
     }
 }

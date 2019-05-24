@@ -3,7 +3,10 @@ package com.ruanchao.mvvmdemo.factory
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.ruanchao.mvpframe.net.NetWorkManager
+import com.ruanchao.mvvmdemo.MainApplication
 import com.ruanchao.mvvmdemo.bean.Animal
+import com.ruanchao.mvvmdemo.db.BlogContentDatabase
+import com.ruanchao.mvvmdemo.model.HomeBlogRepo
 import com.ruanchao.mvvmdemo.viewmodel.AnimalViewModel
 import com.ruanchao.mvvmdemo.viewmodel.HomeBlogViewModel
 import java.lang.IllegalArgumentException
@@ -20,8 +23,11 @@ class ViewModelFactory private constructor() : ViewModelProvider.Factory{
             //........可以创建更多的ViewModel......
 
             modelClass.isAssignableFrom(HomeBlogViewModel::class.java) -> {
+
+                var homeBlogRepo = HomeBlogRepo(NetWorkManager.getInstance().getRequestApi(),
+                    BlogContentDatabase.getInstance(MainApplication.context!!)!!.blogContentDao())
                 var homeBlogViewModel: HomeBlogViewModel
-                        = HomeBlogViewModel(NetWorkManager.getInstance().getRequestApi())
+                        = HomeBlogViewModel(homeBlogRepo)
                 return homeBlogViewModel as T
             }
 

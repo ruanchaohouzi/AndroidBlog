@@ -1,13 +1,6 @@
 package com.ruanchao.mvpframe.bean
 
-class HomeData(var itemType: Int, var itemValue: Any?){
-    var type: Int = -1
-    var item: Any? = null
-
-    init {
-        type = itemType
-        item = itemValue
-    }
+class HomeData(var itemType: Int = -1, var itemValue: Any?){
 
     companion object {
 

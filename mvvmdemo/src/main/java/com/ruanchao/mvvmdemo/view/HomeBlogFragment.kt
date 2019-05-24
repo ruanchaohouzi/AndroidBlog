@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.ruanchao.mvpframe.adapter.BlogHomeAdapter
 import com.ruanchao.mvpframe.bean.HomeData
 import com.ruanchao.mvpframe.utils.StatusBarUtil
@@ -83,7 +84,14 @@ class HomeBlogFragment: Fragment() {
                 }else{
                     mBlogHomeAdapter?.addHomeDataList(it)
                 }
+                srf_home_refresh.isRefreshing = false
+            }
+        })
 
+        //用于观察ViewModel中的错误信息
+        dataBindingView.viewModel?.errorInfo?.observe(dataBindingView.lifecycleOwner!!, Observer {
+            if (!it.isNullOrEmpty()){
+                Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
                 srf_home_refresh.isRefreshing = false
             }
         })
