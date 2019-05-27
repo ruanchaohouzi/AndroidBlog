@@ -15,11 +15,11 @@ import com.daimajia.slider.library.Tricks.ViewPagerEx
 import com.ruanchao.mvpframe.bean.BannerInfo
 import com.ruanchao.mvvmdemo.R
 import com.ruanchao.mvvmdemo.databinding.HomeRecyclerItemLayoutBinding
-import com.ruanchao.mvvmdemo.view.BlogDetailActivity
-import com.ruanchao.mvvmdemo.viewmodel.HomeBlogViewModel
+import com.ruanchao.mvvmdemo.home.BlogDetailActivity
+import com.ruanchao.mvvmdemo.home.HomeBlogViewModel
 
 
-class BlogHomeAdapter constructor(data: MutableList<HomeData>, context: Context,
+class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,
                                   viewModel: HomeBlogViewModel?): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var mHomeDataList: MutableList<HomeData> = mutableListOf()

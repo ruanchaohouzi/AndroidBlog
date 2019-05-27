@@ -6,7 +6,7 @@
     <data>
         <import type="android.view.View"/>
         <variable name="vm"
-                  type="com.ruanchao.mvvmdemo.viewmodel.AnimalViewModel"/>
+                  type="com.ruanchao.mvvmdemo.animal.AnimalViewModel"/>
     </data>
 
     <LinearLayout
@@ -14,7 +14,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:toast="@{vm.error}"
-            tools:context=".view.AnimalActivity">
+            tools:context=".animal.AnimalActivity">
 
         <TextView
                 android:id="@+id/mTvCount"

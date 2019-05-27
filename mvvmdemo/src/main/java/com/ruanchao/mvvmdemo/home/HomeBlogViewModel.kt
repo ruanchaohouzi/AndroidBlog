@@ -1,14 +1,12 @@
-package com.ruanchao.mvvmdemo.viewmodel
+package com.ruanchao.mvvmdemo.home
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.ruanchao.mvpframe.bean.*
 import com.ruanchao.mvvmdemo.bean.BlogContent
-import com.ruanchao.mvvmdemo.model.HomeBlogRepo
 import com.ruanchao.mvvmdemo.utils.schedule
 import com.ruanchao.mvvmdemo.utils.set
 import io.reactivex.*
@@ -18,7 +16,6 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
 import org.json.JSONObject
-import java.lang.reflect.Type
 
 
 class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
@@ -40,6 +37,10 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
     private val _errorInfo = MutableLiveData<String>()
     val errorInfo: MutableLiveData<String>
         get() = _errorInfo
+
+    private val _isRefreshing = MutableLiveData<Boolean>().apply { value = false }
+    val isRefreshing: MutableLiveData<Boolean>
+        get() = _isRefreshing
 
     val getBlogContentFromLocal: Observable<MutableList<HomeData>> = homeBlogRepo.getBlogContentFormLocal()
         .map {
@@ -88,11 +89,13 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
                         Log.i(TAG, "onNext:${gson.toJson(homeDatas)}")
                         if (homeDatas != null && homeDatas.size > 0) {
                             _homeDataList.set(homeDatas)
+                            _isRefreshing.set(false)
                         }
                     }
 
                     override fun onError(e: Throwable) {
                         errorInfo.set(e.message)
+                        _isRefreshing.set(false)
                         print(e.message)
                     }
 
@@ -120,10 +123,12 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
                         homeDatas.add(HomeData(HomeData.VIEW_TYPE_CONTENT, item))
                     }
                     _refreshHomeDataList.set(homeDatas)
+                    _isRefreshing.set(false)
                 }
 
                 override fun onError(e: Throwable) {
                     errorInfo.set(e.message)
+                    _isRefreshing.set(false)
                 }
 
             })

@@ -1,4 +1,4 @@
-package com.ruanchao.mvvmdemo.model
+package com.ruanchao.mvvmdemo.animal
 
 import com.ruanchao.mvpframe.bean.BaseNetBean
 import com.ruanchao.mvpframe.bean.Projects

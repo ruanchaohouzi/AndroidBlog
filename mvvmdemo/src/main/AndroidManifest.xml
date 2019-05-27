@@ -13,9 +13,9 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="com.ruanchao.mvvmdemo.view.BlogDetailActivity">
+        <activity android:name="com.ruanchao.mvvmdemo.home.BlogDetailActivity">
         </activity>
-        <activity android:name=".view.AnimalActivity">
+        <activity android:name=".animal.AnimalActivity">
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>

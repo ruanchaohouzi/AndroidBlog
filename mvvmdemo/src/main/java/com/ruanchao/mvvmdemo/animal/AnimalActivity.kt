@@ -1,4 +1,4 @@
-package com.ruanchao.mvvmdemo.view
+package com.ruanchao.mvvmdemo.animal
 
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
@@ -7,7 +7,6 @@ import android.os.Bundle
 import com.ruanchao.mvvmdemo.R
 import com.ruanchao.mvvmdemo.databinding.ActivityAnimalBinding
 import com.ruanchao.mvvmdemo.factory.ViewModelFactory
-import com.ruanchao.mvvmdemo.viewmodel.AnimalViewModel
 
 class AnimalActivity : AppCompatActivity() {
 

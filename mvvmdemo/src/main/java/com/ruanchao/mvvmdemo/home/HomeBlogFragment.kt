@@ -1,4 +1,4 @@
-package com.ruanchao.mvvmdemo.view
+package com.ruanchao.mvvmdemo.home
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -13,14 +13,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.ruanchao.mvpframe.adapter.BlogHomeAdapter
+import com.ruanchao.mvpframe.adapter.HomeBlogAdapter
 import com.ruanchao.mvpframe.bean.HomeData
 import com.ruanchao.mvpframe.utils.StatusBarUtil
 import com.ruanchao.mvvmdemo.R
 import com.ruanchao.mvvmdemo.databinding.HomeBlogFragmentBinding
-import com.ruanchao.mvvmdemo.listener.TaskListener
 import com.ruanchao.mvvmdemo.utils.obtainViewModel
-import com.ruanchao.mvvmdemo.viewmodel.HomeBlogViewModel
 import kotlinx.android.synthetic.main.home_blog_fragment.view.*
 import kotlinx.android.synthetic.main.home_fragment_layout.*
 
@@ -30,16 +28,19 @@ class HomeBlogFragment: Fragment() {
 
     private var homeDataList: MutableList<HomeData> = mutableListOf()
 
-    var mBlogHomeAdapter:BlogHomeAdapter? = null
+    private
+
+    var mBlogHomeAdapter:HomeBlogAdapter? = null
 
     var mCurrentPage: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        var viewModel = obtainViewModel(this,HomeBlogViewModel::class.java)
-        dataBindingView = HomeBlogFragmentBinding.inflate(inflater, container, false)
-        dataBindingView.viewModel = viewModel
-        //必须要绑定生命周期，不写没效果
+        var viewModelValue = obtainViewModel(this, HomeBlogViewModel::class.java)
+        dataBindingView = HomeBlogFragmentBinding.inflate(inflater, container, false).apply {
+            viewModel = viewModelValue
+        }
+        //必须要绑定生命周期，不写没效果,这样就可以增加监听器 监听数据的变化
         dataBindingView.setLifecycleOwner(this)
 
         return dataBindingView.root
@@ -68,13 +69,14 @@ class HomeBlogFragment: Fragment() {
     }
 
     private fun initObserver() {
-        //用于观察ViewModel中的数据变化
-        dataBindingView.viewModel?.homeDataList?.observe(dataBindingView.lifecycleOwner!!, Observer {
-            if (it != null && it.size > 0) {
-                mBlogHomeAdapter?.setHomeDataLists(it)
-                srf_home_refresh.isRefreshing = false
-            }
-        })
+        //用于观察ViewModel中的数据变化,也可以采取BindingAdapter进行数据的通知操作
+        //已采取BindingAdapter方式实现
+//        dataBindingView.viewModel?.homeDataList?.observe(dataBindingView.lifecycleOwner!!, Observer {
+//            if (it != null && it.size > 0) {
+//                mBlogHomeAdapter?.setHomeDataLists(it)
+//                srf_home_refresh.isRefreshing = false
+//            }
+//        })
 
         //用于观察ViewModel中的刷新数据变化（上拉，下拉）
         dataBindingView.viewModel?.refreshHomeDataList?.observe(dataBindingView.lifecycleOwner!!, Observer {
@@ -84,7 +86,7 @@ class HomeBlogFragment: Fragment() {
                 }else{
                     mBlogHomeAdapter?.addHomeDataList(it)
                 }
-                srf_home_refresh.isRefreshing = false
+//                srf_home_refresh.isRefreshing = false
             }
         })
 
@@ -92,7 +94,7 @@ class HomeBlogFragment: Fragment() {
         dataBindingView.viewModel?.errorInfo?.observe(dataBindingView.lifecycleOwner!!, Observer {
             if (!it.isNullOrEmpty()){
                 Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
-                srf_home_refresh.isRefreshing = false
+//                srf_home_refresh.isRefreshing = false
             }
         })
     }
@@ -104,7 +106,7 @@ class HomeBlogFragment: Fragment() {
     }
 
     private fun setupRecyclerAdapter() {
-        mBlogHomeAdapter = BlogHomeAdapter(homeDataList,activity as Context, dataBindingView.viewModel)
+        mBlogHomeAdapter = HomeBlogAdapter(homeDataList,activity as Context, dataBindingView.viewModel)
         projectRecyclerView.run {
             layoutManager = LinearLayoutManager(activity)
             adapter = mBlogHomeAdapter
@@ -116,7 +118,8 @@ class HomeBlogFragment: Fragment() {
 //            BlogDetailActivity.start(activity as Context, projectInfo.projectLink)
         }
         mBlogHomeAdapter?.setOnItemClickListener {
-            p -> BlogDetailActivity.start(activity!!,p.projectLink)
+            p ->
+            BlogDetailActivity.start(activity!!, p.projectLink)
         }
         projectRecyclerView.addOnScrollListener(mRecyclerViewScrollListener)
     }

@@ -1,4 +1,4 @@
-package com.ruanchao.mvvmdemo.view
+package com.ruanchao.mvvmdemo.home
 
 import android.content.Context
 import android.content.Intent

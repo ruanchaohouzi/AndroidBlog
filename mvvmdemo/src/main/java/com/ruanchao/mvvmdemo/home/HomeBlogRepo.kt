@@ -1,4 +1,4 @@
-package com.ruanchao.mvvmdemo.model
+package com.ruanchao.mvvmdemo.home
 
 import com.ruanchao.mvpframe.bean.BannerInfo
 import com.ruanchao.mvpframe.bean.BaseNetBean

@@ -6,9 +6,9 @@ import com.ruanchao.mvpframe.net.NetWorkManager
 import com.ruanchao.mvvmdemo.MainApplication
 import com.ruanchao.mvvmdemo.bean.Animal
 import com.ruanchao.mvvmdemo.db.BlogContentDatabase
-import com.ruanchao.mvvmdemo.model.HomeBlogRepo
-import com.ruanchao.mvvmdemo.viewmodel.AnimalViewModel
-import com.ruanchao.mvvmdemo.viewmodel.HomeBlogViewModel
+import com.ruanchao.mvvmdemo.home.HomeBlogRepo
+import com.ruanchao.mvvmdemo.animal.AnimalViewModel
+import com.ruanchao.mvvmdemo.home.HomeBlogViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory private constructor() : ViewModelProvider.Factory{
@@ -24,8 +24,10 @@ class ViewModelFactory private constructor() : ViewModelProvider.Factory{
 
             modelClass.isAssignableFrom(HomeBlogViewModel::class.java) -> {
 
-                var homeBlogRepo = HomeBlogRepo(NetWorkManager.getInstance().getRequestApi(),
-                    BlogContentDatabase.getInstance(MainApplication.context!!)!!.blogContentDao())
+                var homeBlogRepo = HomeBlogRepo(
+                    NetWorkManager.getInstance().getRequestApi(),
+                    BlogContentDatabase.getInstance(MainApplication.context!!)!!.blogContentDao()
+                )
                 var homeBlogViewModel: HomeBlogViewModel
                         = HomeBlogViewModel(homeBlogRepo)
                 return homeBlogViewModel as T

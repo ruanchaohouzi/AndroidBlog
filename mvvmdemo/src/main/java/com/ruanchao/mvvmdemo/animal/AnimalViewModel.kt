@@ -1,29 +1,18 @@
-package com.ruanchao.mvvmdemo.viewmodel
+package com.ruanchao.mvvmdemo.animal
 
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
-import android.databinding.BindingAdapter
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import com.ruanchao.mvpframe.bean.BaseNetBean
 import com.ruanchao.mvpframe.bean.Projects
 import com.ruanchao.mvvmdemo.MainApplication
 import com.ruanchao.mvvmdemo.bean.Animal
 import com.ruanchao.mvvmdemo.bean.UserInfo
-import com.ruanchao.mvvmdemo.db.UserDao
 import com.ruanchao.mvvmdemo.db.UserDb
-import com.ruanchao.mvvmdemo.model.AnimalModel
 import com.ruanchao.mvvmdemo.utils.schedule
 import com.ruanchao.mvvmdemo.utils.set
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
-import java.util.function.Consumer
 
 //必须要继承于ViewModel()
 class AnimalViewModel(val animal: Animal): ViewModel(){
