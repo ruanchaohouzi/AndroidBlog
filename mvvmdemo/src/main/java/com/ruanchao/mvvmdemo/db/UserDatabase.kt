@@ -8,7 +8,7 @@ import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.migration.Migration
 
 
-@Database(entities = arrayOf(UserInfo::class), version = 1)
+@Database(entities = [UserInfo::class], version = 1)
 abstract class UserDb : RoomDatabase() {
 
     companion object {
@@ -25,7 +25,7 @@ abstract class UserDb : RoomDatabase() {
             return mInstance
         }
 
-        fun buildDatabase(context: Context): UserDb {
+        private fun buildDatabase(context: Context): UserDb {
             return Room.databaseBuilder(context,UserDb::class.java,"user.db")
                 .build()
         }

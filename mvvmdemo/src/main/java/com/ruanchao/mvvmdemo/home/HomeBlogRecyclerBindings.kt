@@ -1,10 +1,9 @@
 package com.ruanchao.mvvmdemo.home
 
 import android.databinding.BindingAdapter
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
-import com.ruanchao.mvpframe.adapter.HomeBlogAdapter
-import com.ruanchao.mvpframe.bean.HomeData
+import com.ruanchao.mvvmdemo.adapter.HomeBlogAdapter
+import com.ruanchao.mvvmdemo.bean.HomeData
 
 object HomeBlogRecyclerBindings{
 

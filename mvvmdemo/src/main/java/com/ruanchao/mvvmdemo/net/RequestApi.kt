@@ -1,9 +1,9 @@
-package com.ruanchao.mvpframe.net
+package com.ruanchao.mvvmdemo.net
 
-import com.ruanchao.mvpframe.bean.BannerInfo
-import com.ruanchao.mvpframe.bean.BaseNetBean
-import com.ruanchao.mvpframe.bean.Projects
-import com.ruanchao.mvpframe.bean.VideoListBean
+import com.ruanchao.mvvmdemo.bean.BannerInfo
+import com.ruanchao.mvvmdemo.bean.BaseNetBean
+import com.ruanchao.mvvmdemo.bean.Projects
+import com.ruanchao.mvvmdemo.bean.VideoListBean
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path

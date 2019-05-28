@@ -11,7 +11,7 @@ interface UserDao{
     fun insertAll(users: List<UserInfo>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(user: UserInfo);
+    fun insert(user: UserInfo)
 
     @Query("select * from user_info where userId=:userId")
     fun getUserInfoById(userId: Int): Single<UserInfo>

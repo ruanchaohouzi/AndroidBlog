@@ -1,4 +1,4 @@
-package com.ruanchao.mvpframe.utils
+package com.ruanchao.mvvmdemo.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -22,7 +22,7 @@ class NetworkUtil{
         var NET_CNNT_BAIDU_TIMEOUT = 2 // no NetworkAvailable
         var NET_NOT_PREPARE = 3 // Net no ready
         var NET_ERROR = 4 //net error
-        private val TIMEOUT = 3000 // TIMEOUT
+        private const val TIMEOUT = 3000 // TIMEOUT
         /**
          * check NetworkAvailable
          *
@@ -81,9 +81,7 @@ class NetworkUtil{
                 result = true
             } catch (e: IOException) {
             } finally {
-                if (null != httpUrl) {
-                    httpUrl.disconnect()
-                }
+                httpUrl?.disconnect()
             }
             return result
         }

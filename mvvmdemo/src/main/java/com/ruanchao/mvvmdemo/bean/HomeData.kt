@@ -1,11 +1,11 @@
-package com.ruanchao.mvpframe.bean
+package com.ruanchao.mvvmdemo.bean
 
 class HomeData(var itemType: Int = -1, var itemValue: Any?){
 
     companion object {
 
-        val VIEW_TYPE_BANNER_LIST = 0
-        val VIEW_TYPE_CONTENT = 1
-        val VIEW_TYPE_FOOT= 2
+        const val VIEW_TYPE_BANNER_LIST = 0
+        const val VIEW_TYPE_CONTENT = 1
+        const val VIEW_TYPE_FOOT= 2
     }
 }

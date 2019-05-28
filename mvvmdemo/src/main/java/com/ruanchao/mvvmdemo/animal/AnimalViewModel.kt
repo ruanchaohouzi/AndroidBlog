@@ -3,8 +3,8 @@ package com.ruanchao.mvvmdemo.animal
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
-import com.ruanchao.mvpframe.bean.BaseNetBean
-import com.ruanchao.mvpframe.bean.Projects
+import com.ruanchao.mvvmdemo.bean.BaseNetBean
+import com.ruanchao.mvvmdemo.bean.Projects
 import com.ruanchao.mvvmdemo.MainApplication
 import com.ruanchao.mvvmdemo.bean.Animal
 import com.ruanchao.mvvmdemo.bean.UserInfo
@@ -15,14 +15,14 @@ import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 
 //必须要继承于ViewModel()
-class AnimalViewModel(val animal: Animal): ViewModel(){
+class AnimalViewModel(private val animal: Animal): ViewModel(){
 
-    val mCompositeDisposable : CompositeDisposable by lazy {
+    private val mCompositeDisposable : CompositeDisposable by lazy {
         CompositeDisposable()
     }
 
-    val mModel: AnimalModel by lazy {
-        var userDao = UserDb.getInstance(MainApplication.context!!)!!.userDao()
+    private val mModel: AnimalModel by lazy {
+        val userDao = UserDb.getInstance(MainApplication.context!!)!!.userDao()
         AnimalModel(userDao)
     }
 
@@ -65,16 +65,16 @@ class AnimalViewModel(val animal: Animal): ViewModel(){
     }
 
     fun insert(){
-        var userInfo1 : UserInfo = UserInfo()
+        val userInfo1 = UserInfo()
         userInfo1.userId = 1
         userInfo1.userName = "rc"
         userInfo1.pwd = "12133"
 
-        var userInfo2 : UserInfo = UserInfo()
+        val userInfo2 = UserInfo()
         userInfo2.userId = 1
         userInfo2.userName = "rc"
         userInfo2.pwd = "12133"
-        var list:ArrayList<UserInfo> = ArrayList()
+        val list:ArrayList<UserInfo> = ArrayList()
         list.add(userInfo1)
         list.add(userInfo2)
         mModel.insertAll(list)

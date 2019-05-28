@@ -5,8 +5,6 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.ruanchao.mvvmdemo.bean.BlogContent
-import io.reactivex.Observable
-import io.reactivex.Single
 
 @Dao
 interface BlogContentDao {

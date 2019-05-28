@@ -4,7 +4,7 @@
 
     <data>
         <import type="android.view.View"/>
-        <variable name="projectInfo" type="com.ruanchao.mvpframe.bean.ProjectInfo"/>
+        <variable name="projectInfo" type="com.ruanchao.mvvmdemo.bean.ProjectInfo"/>
     </data>
 
     <LinearLayout

@@ -5,8 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.ruanchao.mvpframe.bean.*
-import com.ruanchao.mvvmdemo.bean.BlogContent
+import com.ruanchao.mvvmdemo.bean.*
 import com.ruanchao.mvvmdemo.utils.schedule
 import com.ruanchao.mvvmdemo.utils.set
 import io.reactivex.*
@@ -20,7 +19,7 @@ import org.json.JSONObject
 
 class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
 
-    private val TAG: String = "HomeBlogViewModel"
+    private val _TAG: String = "HomeBlogViewModel"
 
     val gson: Gson by lazy {
         Gson()
@@ -42,12 +41,12 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
     val isRefreshing: MutableLiveData<Boolean>
         get() = _isRefreshing
 
-    val getBlogContentFromLocal: Observable<MutableList<HomeData>> = homeBlogRepo.getBlogContentFormLocal()
+    private val getBlogContentFromLocal: Observable<MutableList<HomeData>> = homeBlogRepo.getBlogContentFormLocal()
         .map {
             var newResMsg: MutableList<HomeData>? = mutableListOf()
             if (it != null && it.size > 0) {
                 newResMsg = parseContent(it[0].content)
-                Log.i(TAG, "get from local")
+                Log.i(_TAG, "get from local")
             }
             newResMsg
         }
@@ -61,20 +60,20 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
             getAllProjectByPage,
             getBannerList,
             BiFunction<BaseNetBean<Projects>, BaseNetBean<List<BannerInfo>>, MutableList<HomeData>> { projectsBaseNetBean, listBaseNetBean ->
-                var homeDatas: MutableList<HomeData> = mutableListOf()
+                val homeDatas: MutableList<HomeData> = mutableListOf()
                 val projectList: List<ProjectInfo>? = projectsBaseNetBean.data?.datas
                 projectList?.forEach { item ->
                     homeDatas.add(HomeData(HomeData.VIEW_TYPE_CONTENT, item))
                 }
 
-                var bannerLists: List<BannerInfo> = listBaseNetBean.data as List<BannerInfo>
+                val bannerLists: List<BannerInfo> = listBaseNetBean.data as List<BannerInfo>
                 homeDatas.add(0, HomeData(HomeData.VIEW_TYPE_BANNER_LIST, bannerLists))
-                Log.i(TAG, "get from remote")
+                Log.i(_TAG, "get from remote")
                 homeDatas
             }).doOnNext {
             //进行网络请求数据的更新
             val content = gson.toJson(it)
-            var blogContent: BlogContent = BlogContent(1, content)
+            val blogContent = BlogContent(1, content)
             homeBlogRepo.addOrUpdateBlogContent(blogContent)
         }
 
@@ -86,7 +85,7 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
                     override fun onSubscribe(d: Disposable) {}
 
                     override fun onNext(homeDatas: MutableList<HomeData>) {
-                        Log.i(TAG, "onNext:${gson.toJson(homeDatas)}")
+                        Log.i(_TAG, "onNext:${gson.toJson(homeDatas)}")
                         if (homeDatas != null && homeDatas.size > 0) {
                             _homeDataList.set(homeDatas)
                             _isRefreshing.set(false)
@@ -107,7 +106,7 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
     }
 
     fun getAllProjectByPage(page: Int) {
-        homeBlogRepo!!.getAllProjectByPageFormRemote(page).observeOn(AndroidSchedulers.mainThread())
+        homeBlogRepo.getAllProjectByPageFormRemote(page).observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe(object : Observer<BaseNetBean<Projects>> {
                 override fun onComplete() {
@@ -117,8 +116,8 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
                 }
 
                 override fun onNext(data: BaseNetBean<Projects>) {
-                    var homeDatas: MutableList<HomeData> = mutableListOf()
-                    val projectList: List<ProjectInfo>? = data?.data?.datas
+                    val homeDatas: MutableList<HomeData> = mutableListOf()
+                    val projectList: List<ProjectInfo>? = data.data?.datas
                     projectList?.forEach { item ->
                         homeDatas.add(HomeData(HomeData.VIEW_TYPE_CONTENT, item))
                     }
@@ -134,10 +133,10 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
             })
     }
 
-    fun parseContent(content: String?): MutableList<HomeData> {
+    private fun parseContent(content: String?): MutableList<HomeData> {
 
-        var homeDataList: MutableList<HomeData> = mutableListOf()
-        val jsonArray: JSONArray = JSONArray(content)
+        val homeDataList: MutableList<HomeData> = mutableListOf()
+        val jsonArray = JSONArray(content)
         for (i in 0..(jsonArray.length() - 1)) {
 
             val jsonValue: JSONObject = jsonArray.get(i) as JSONObject

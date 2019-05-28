@@ -1,10 +1,10 @@
-package com.ruanchao.mvpframe.bean
+package com.ruanchao.mvvmdemo.bean
 
 //委托，将MutableCollection委托给innerSet，这样就具有了MutableCollection中的方法
-class CountingSet<T>(var innerSet:MutableCollection<T> = HashSet<T>())
+class CountingSet<T>(private val innerSet:MutableCollection<T> = HashSet())
     : MutableCollection<T> by innerSet{
 
-    var count: Int = 0
+    private var count: Int = 0
     override fun add(element: T): Boolean {
         count++
         return innerSet.add(element)

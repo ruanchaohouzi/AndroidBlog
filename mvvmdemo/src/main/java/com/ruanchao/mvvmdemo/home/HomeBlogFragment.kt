@@ -13,8 +13,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.ruanchao.mvpframe.adapter.HomeBlogAdapter
-import com.ruanchao.mvpframe.bean.HomeData
+import com.ruanchao.mvvmdemo.adapter.HomeBlogAdapter
+import com.ruanchao.mvvmdemo.bean.HomeData
 import com.ruanchao.mvpframe.utils.StatusBarUtil
 import com.ruanchao.mvvmdemo.R
 import com.ruanchao.mvvmdemo.databinding.HomeBlogFragmentBinding
@@ -24,24 +24,22 @@ import kotlinx.android.synthetic.main.home_fragment_layout.*
 
 class HomeBlogFragment: Fragment() {
 
-    lateinit var dataBindingView: HomeBlogFragmentBinding
+    private lateinit var dataBindingView: HomeBlogFragmentBinding
 
     private var homeDataList: MutableList<HomeData> = mutableListOf()
 
-    private
-
-    var mBlogHomeAdapter:HomeBlogAdapter? = null
+    private var mBlogHomeAdapter: HomeBlogAdapter? = null
 
     var mCurrentPage: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        var viewModelValue = obtainViewModel(this, HomeBlogViewModel::class.java)
+        val viewModelValue = obtainViewModel(this, HomeBlogViewModel::class.java)
         dataBindingView = HomeBlogFragmentBinding.inflate(inflater, container, false).apply {
             viewModel = viewModelValue
         }
         //必须要绑定生命周期，不写没效果,这样就可以增加监听器 监听数据的变化
-        dataBindingView.setLifecycleOwner(this)
+        dataBindingView.lifecycleOwner = this
 
         return dataBindingView.root
     }
@@ -111,7 +109,7 @@ class HomeBlogFragment: Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = mBlogHomeAdapter
         }
-        var dividerItemDecoration: DividerItemDecoration = DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
+        val dividerItemDecoration = DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(activity as Context, R.drawable.home_recycler_item_divider)!!)
         projectRecyclerView.addItemDecoration(dividerItemDecoration)
         mBlogHomeAdapter!!.setOnItemClickListener { position, projectInfo ->
@@ -124,18 +122,18 @@ class HomeBlogFragment: Fragment() {
         projectRecyclerView.addOnScrollListener(mRecyclerViewScrollListener)
     }
 
-    var mRecyclerViewScrollListener: RecyclerView.OnScrollListener = object: RecyclerView.OnScrollListener() {
+    private var mRecyclerViewScrollListener: RecyclerView.OnScrollListener = object: RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             //当前RecyclerView显示出来的最后一个的item的position
-            var lastPosition: Int = -1;
+            var lastPosition: Int = -1
             //当前状态为停止滑动状态SCROLL_STATE_IDLE时
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                var layoutManager: RecyclerView.LayoutManager? = recyclerView.layoutManager;
-                lastPosition = (layoutManager as LinearLayoutManager).findLastVisibleItemPosition();
+                val layoutManager: RecyclerView.LayoutManager? = recyclerView.layoutManager
+                lastPosition = (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                 //时判断界面显示的最后item的position是否等于itemCount总数-1也就是最后一个item的position
                 //如果相等则说明已经滑动到最后了
-                if (lastPosition == recyclerView.getLayoutManager()!!.itemCount - 1) {
+                if (lastPosition == recyclerView.layoutManager!!.itemCount - 1) {
                     loadData(++mCurrentPage)
                 }
             }
@@ -144,11 +142,11 @@ class HomeBlogFragment: Fragment() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
-            val firstPosition = linearLayoutManager.findFirstVisibleItemPosition();
+            val firstPosition = linearLayoutManager.findFirstVisibleItemPosition()
             if (firstPosition == 0) {
                 mHomeToolbar.setBackgroundColor(ContextCompat.getColor(activity as Context, R.color.color_translucent))
                 mHomeSearchIcon.setImageResource(R.mipmap.home_ic_action_search_white)
-                mHomeTitle.setText("")
+                mHomeTitle.text = ""
             } else {
                 if (mBlogHomeAdapter!!.getHomeDataList().size > 1) {
                     mHomeToolbar.setBackgroundColor(
@@ -158,7 +156,7 @@ class HomeBlogFragment: Fragment() {
                         )
                     )
                     mHomeSearchIcon.setImageResource(R.mipmap.home_ic_action_search_black)
-                    mHomeTitle.setText("首页")
+                    mHomeTitle.text = "首页"
                 }
             }
         }

@@ -1,6 +1,6 @@
-package com.ruanchao.mvpframe.utils
+package com.ruanchao.mvvmdemo.utils
 
 object Constants{
 
-    val BASE_URL: String = "https://wanandroid.com"
+    const val BASE_URL: String = "https://wanandroid.com"
 }

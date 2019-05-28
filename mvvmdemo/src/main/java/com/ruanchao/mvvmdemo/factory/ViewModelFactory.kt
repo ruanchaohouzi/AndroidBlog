@@ -2,7 +2,7 @@ package com.ruanchao.mvvmdemo.factory
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.ruanchao.mvpframe.net.NetWorkManager
+import com.ruanchao.mvvmdemo.net.NetWorkManager
 import com.ruanchao.mvvmdemo.MainApplication
 import com.ruanchao.mvvmdemo.bean.Animal
 import com.ruanchao.mvvmdemo.db.BlogContentDatabase
@@ -16,19 +16,19 @@ class ViewModelFactory private constructor() : ViewModelProvider.Factory{
 
         when{
             modelClass.isAssignableFrom(AnimalViewModel::class.java) -> {
-                val animal: Animal = Animal("dog", 0)
-                var viewModel = AnimalViewModel(animal)
+                val animal = Animal("dog", 0)
+                val viewModel = AnimalViewModel(animal)
                 return viewModel as T
             }
             //........可以创建更多的ViewModel......
 
             modelClass.isAssignableFrom(HomeBlogViewModel::class.java) -> {
 
-                var homeBlogRepo = HomeBlogRepo(
+                val homeBlogRepo = HomeBlogRepo(
                     NetWorkManager.getInstance().getRequestApi(),
                     BlogContentDatabase.getInstance(MainApplication.context!!)!!.blogContentDao()
                 )
-                var homeBlogViewModel: HomeBlogViewModel
+                val homeBlogViewModel
                         = HomeBlogViewModel(homeBlogRepo)
                 return homeBlogViewModel as T
             }

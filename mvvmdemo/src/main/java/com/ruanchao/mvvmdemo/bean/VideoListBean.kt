@@ -1,4 +1,4 @@
-package com.ruanchao.mvpframe.bean
+package com.ruanchao.mvvmdemo.bean
 
 data class VideoListBean(
     val dialog: Any,

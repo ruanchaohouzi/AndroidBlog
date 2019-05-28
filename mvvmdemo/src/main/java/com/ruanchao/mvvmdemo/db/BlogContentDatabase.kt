@@ -7,7 +7,7 @@ import android.content.Context
 import com.ruanchao.mvvmdemo.bean.BlogContent
 
 
-@Database(entities = arrayOf(BlogContent::class), version = 1)
+@Database(entities = [BlogContent::class], version = 1)
 abstract class BlogContentDatabase: RoomDatabase() {
     companion object {
         @Volatile private var mInstance: BlogContentDatabase? = null

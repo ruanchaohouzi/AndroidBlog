@@ -13,9 +13,9 @@ import kotlinx.android.synthetic.main.activity_blog_detail.*
 class BlogDetailActivity : AppCompatActivity() {
 
     companion object {
-        val BLOG_DETAIL_URL: String = "BLOG_DETAIL_URL"
+        const val BLOG_DETAIL_URL: String = "BLOG_DETAIL_URL"
         fun start(context: Context, url: String){
-            var intent: Intent = Intent(context, BlogDetailActivity::class.java)
+            val intent = Intent(context, BlogDetailActivity::class.java)
             intent.putExtra(BLOG_DETAIL_URL, url)
             context.startActivity(intent)
         }
@@ -28,7 +28,7 @@ class BlogDetailActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        var url = intent.getStringExtra(BLOG_DETAIL_URL)
+        val url = intent.getStringExtra(BLOG_DETAIL_URL)
         Log.i("BlogDetailActivity", url)
         AgentWeb.with(this)
             .setAgentWebParent(ll_blog_web,LinearLayout.LayoutParams(-1,-1))
