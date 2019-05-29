@@ -9,6 +9,8 @@ import com.ruanchao.mvvmdemo.db.BlogContentDatabase
 import com.ruanchao.mvvmdemo.home.HomeBlogRepo
 import com.ruanchao.mvvmdemo.animal.AnimalViewModel
 import com.ruanchao.mvvmdemo.home.HomeBlogViewModel
+import com.ruanchao.mvvmdemo.ui.login.LoginRepo
+import com.ruanchao.mvvmdemo.ui.login.LoginViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory private constructor() : ViewModelProvider.Factory{
@@ -25,12 +27,17 @@ class ViewModelFactory private constructor() : ViewModelProvider.Factory{
             modelClass.isAssignableFrom(HomeBlogViewModel::class.java) -> {
 
                 val homeBlogRepo = HomeBlogRepo(
-                    NetWorkManager.getInstance().getRequestApi(),
+                    NetWorkManager.getInstance().getWanAndroidApi(),
                     BlogContentDatabase.getInstance(MainApplication.context!!)!!.blogContentDao()
                 )
                 val homeBlogViewModel
                         = HomeBlogViewModel(homeBlogRepo)
                 return homeBlogViewModel as T
+            }
+            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
+
+                val loginRepo = LoginRepo(NetWorkManager.getInstance().getGithubApi())
+                return LoginViewModel(loginRepo) as T
             }
 
             else ->{

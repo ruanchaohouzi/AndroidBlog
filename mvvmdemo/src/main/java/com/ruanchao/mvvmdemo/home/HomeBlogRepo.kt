@@ -3,14 +3,12 @@ package com.ruanchao.mvvmdemo.home
 import com.ruanchao.mvvmdemo.bean.BannerInfo
 import com.ruanchao.mvvmdemo.bean.BaseNetBean
 import com.ruanchao.mvvmdemo.bean.Projects
-import com.ruanchao.mvvmdemo.net.RequestApi
+import com.ruanchao.mvvmdemo.net.WanAndroidApi
 import com.ruanchao.mvvmdemo.bean.BlogContent
 import com.ruanchao.mvvmdemo.db.BlogContentDao
 import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
 
-class HomeBlogRepo(private val remote: RequestApi, private val local: BlogContentDao){
+class HomeBlogRepo(private val remote: WanAndroidApi, private val local: BlogContentDao){
 
 
     fun getAllProjectByPageFormRemote(page: Int): Observable<BaseNetBean<Projects>> {

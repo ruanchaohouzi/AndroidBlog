@@ -12,7 +12,9 @@ import java.io.File
 
 class NetWorkManager private constructor(){
 
-    private var mRetrofit: Retrofit? = null
+    private var mWanAndroidRetrofit: Retrofit? = null
+    private var mTucaoRetrofit: Retrofit? = null
+    private var mGithubRetrofit: Retrofit? = null
     private val CACHE_MAX_SIZE: Long = 1024*1024*20
 
     companion object {
@@ -40,15 +42,24 @@ class NetWorkManager private constructor(){
 //            .cache(Cache(cacheFile, CACHE_MAX_SIZE))
             .build()
 
-        mRetrofit = Retrofit.Builder()
-            .client(okHttpClient)
-            .baseUrl(Constants.BASE_URL)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        mWanAndroidRetrofit = buildRetrofit(okHttpClient, Constants.BASE_WAN_ANDROID_URL)
+        mTucaoRetrofit = buildRetrofit(okHttpClient, Constants.BASE_TUCAO_API_URL)
+        mGithubRetrofit = buildRetrofit(okHttpClient, Constants.BASE_GITHUB_API_URL)
     }
 
-    fun getRequestApi(): RequestApi = mRetrofit!!.create(RequestApi::class.java)
+    fun getWanAndroidApi(): WanAndroidApi = mWanAndroidRetrofit!!.create(WanAndroidApi::class.java)
+
+    fun getTucaoApi() = mWanAndroidRetrofit!!.create(TucaoApi::class.java)
+
+    fun getGithubApi() = mGithubRetrofit!!.create(GithubApi::class.java)
+
+    fun buildRetrofit(okHttpClient: OkHttpClient, baseUrl: String) = Retrofit.Builder()
+        .client(okHttpClient)
+        .baseUrl(baseUrl)
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
 
     fun getCacheInterceptor(): Interceptor {
         return Interceptor { chain ->

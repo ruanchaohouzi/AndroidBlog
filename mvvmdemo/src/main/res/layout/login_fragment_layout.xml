@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable name="viewModel" type="com.ruanchao.mvvmdemo.ui.login.LoginViewModel"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#000000"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="Sign in"
+                app:titleTextColor="#ffffff"/>
+
+        <android.support.constraint.ConstraintLayout android:layout_width="0dp"
+                                                     android:layout_height="0dp"
+                                                     app:layout_constraintBottom_toBottomOf="parent"
+                                                     app:layout_constraintLeft_toLeftOf="parent"
+                                                     app:layout_constraintRight_toRightOf="parent"
+                                                     app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <ScrollView android:layout_width="0dp" android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                        android:id="@+id/login_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                >
+                    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+                                                                 android:layout_height="wrap_content">
+                        <ImageView
+                                android:id="@+id/icGithub"
+                                android:layout_width="65dp"
+                                android:layout_height="65dp"
+                                android:layout_marginTop="40dp"
+                                android:layout_marginLeft="30dp"
+                                android:src="@mipmap/ic_github"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                        <TextView
+                                android:id="@+id/tvTips"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="32dp"
+                                android:text="Sign in to Github"
+                                android:textColor="#000000"
+                                android:textSize="24sp"
+                                app:layout_constraintBottom_toBottomOf="@+id/icGithub"
+                                app:layout_constraintLeft_toRightOf="@+id/icGithub"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/icGithub" />
+                    </android.support.constraint.ConstraintLayout>
+
+                    <EditText
+                            android:id="@+id/tvUserName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="请输入用户名"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                   <EditText
+                    android:id="@+id/tvPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="请输入密码"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+
+
+                    <Button
+                            android:id="@+id/mBtnSignIn"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="40dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/selector_login_signin_button"
+                            android:text="Sign in"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:onClick="@{()->viewModel.login()}"
+                    />
+
+                </LinearLayout>
+
+            </ScrollView>
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
+

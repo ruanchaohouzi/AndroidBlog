@@ -37,10 +37,9 @@ class HomeBlogFragment: Fragment() {
         val viewModelValue = obtainViewModel(this, HomeBlogViewModel::class.java)
         dataBindingView = HomeBlogFragmentBinding.inflate(inflater, container, false).apply {
             viewModel = viewModelValue
+            //必须要绑定生命周期，不写没效果,这样就可以增加监听器 监听数据的变化
+            lifecycleOwner = this@HomeBlogFragment
         }
-        //必须要绑定生命周期，不写没效果,这样就可以增加监听器 监听数据的变化
-        dataBindingView.lifecycleOwner = this
-
         return dataBindingView.root
     }
 
@@ -48,7 +47,6 @@ class HomeBlogFragment: Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         initStatuBar()
-
         setupRecyclerAdapter()
         initObserver()
 
@@ -105,15 +103,13 @@ class HomeBlogFragment: Fragment() {
 
     private fun setupRecyclerAdapter() {
         mBlogHomeAdapter = HomeBlogAdapter(homeDataList,activity as Context, dataBindingView.viewModel)
+
+        val dividerItemDecoration = DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(activity as Context, R.drawable.home_recycler_item_divider)!!)
         projectRecyclerView.run {
             layoutManager = LinearLayoutManager(activity)
             adapter = mBlogHomeAdapter
-        }
-        val dividerItemDecoration = DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(activity as Context, R.drawable.home_recycler_item_divider)!!)
-        projectRecyclerView.addItemDecoration(dividerItemDecoration)
-        mBlogHomeAdapter!!.setOnItemClickListener { position, projectInfo ->
-//            BlogDetailActivity.start(activity as Context, projectInfo.projectLink)
+            this.addItemDecoration(dividerItemDecoration)
         }
         mBlogHomeAdapter?.setOnItemClickListener {
             p ->

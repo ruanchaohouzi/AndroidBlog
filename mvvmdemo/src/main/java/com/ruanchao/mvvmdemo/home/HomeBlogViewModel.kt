@@ -80,22 +80,23 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
         //concat 先从本地数据库拿缓存数据   然后再从网络拿数据   每次请求必须要有Complete，不然不知道当前任务是否完成
         Observable.concat(getBlogContentFromLocal, getBlogContentFromRemote)
             .schedule()
+            .doFinally {
+                //在 RxJava 中 doFinally 和 doAfterTerminate 这两个操作符很类似，
+                //都会在 Observable 的 onComplete 或 onError 调用之后进行调用。
+                _isRefreshing.set(false)
+            }
             .subscribe(
                 object : Observer<MutableList<HomeData>> {
                     override fun onSubscribe(d: Disposable) {}
 
                     override fun onNext(homeDatas: MutableList<HomeData>) {
-                        Log.i(_TAG, "onNext:${gson.toJson(homeDatas)}")
                         if (homeDatas != null && homeDatas.size > 0) {
                             _homeDataList.set(homeDatas)
-                            _isRefreshing.set(false)
                         }
                     }
 
                     override fun onError(e: Throwable) {
                         errorInfo.set(e.message)
-                        _isRefreshing.set(false)
-                        print(e.message)
                     }
 
                     override fun onComplete() {

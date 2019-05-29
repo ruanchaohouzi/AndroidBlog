@@ -3,11 +3,8 @@ package com.ruanchao.mvvmdemo.animal
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
-import com.ruanchao.mvvmdemo.bean.BaseNetBean
-import com.ruanchao.mvvmdemo.bean.Projects
 import com.ruanchao.mvvmdemo.MainApplication
-import com.ruanchao.mvvmdemo.bean.Animal
-import com.ruanchao.mvvmdemo.bean.UserInfo
+import com.ruanchao.mvvmdemo.bean.*
 import com.ruanchao.mvvmdemo.db.UserDb
 import com.ruanchao.mvvmdemo.utils.schedule
 import com.ruanchao.mvvmdemo.utils.set
@@ -65,16 +62,16 @@ class AnimalViewModel(private val animal: Animal): ViewModel(){
     }
 
     fun insert(){
-        val userInfo1 = UserInfo()
+        val userInfo1 = UserInfo1()
         userInfo1.userId = 1
         userInfo1.userName = "rc"
         userInfo1.pwd = "12133"
 
-        val userInfo2 = UserInfo()
+        val userInfo2 = UserInfo1()
         userInfo2.userId = 1
         userInfo2.userName = "rc"
         userInfo2.pwd = "12133"
-        val list:ArrayList<UserInfo> = ArrayList()
+        val list:ArrayList<UserInfo1> = ArrayList()
         list.add(userInfo1)
         list.add(userInfo2)
         mModel.insertAll(list)
@@ -87,7 +84,7 @@ class AnimalViewModel(private val animal: Animal): ViewModel(){
     fun getUser(){
         mModel.getUserInfoById(1)
             .subscribe(
-                {it:UserInfo ->
+                {it: UserInfo1 ->
                     Log.i("test", it.userName)
                 },
                 {

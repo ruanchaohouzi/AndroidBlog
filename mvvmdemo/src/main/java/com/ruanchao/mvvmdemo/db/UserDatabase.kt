@@ -1,14 +1,11 @@
 package com.ruanchao.mvvmdemo.db
 
-import android.arch.persistence.db.SupportSQLiteOpenHelper
 import android.arch.persistence.room.*
 import android.content.Context
-import com.ruanchao.mvvmdemo.bean.UserInfo
-import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.room.migration.Migration
+import com.ruanchao.mvvmdemo.bean.UserInfo1
 
 
-@Database(entities = [UserInfo::class], version = 1)
+@Database(entities = [UserInfo1::class], version = 1)
 abstract class UserDb : RoomDatabase() {
 
     companion object {
