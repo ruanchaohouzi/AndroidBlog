@@ -1,4 +1,4 @@
-package com.ruanchao.mvvmdemo.home
+package com.ruanchao.mvvmdemo.ui.home
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel

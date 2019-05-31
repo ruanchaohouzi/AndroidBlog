@@ -6,12 +6,12 @@ import com.ruanchao.mvvmdemo.bean.UserInfo1
 
 
 @Database(entities = [UserInfo1::class], version = 1)
-abstract class UserDb : RoomDatabase() {
+abstract class UserDatabase : RoomDatabase() {
 
     companion object {
-        @Volatile private var mInstance: UserDb? = null
+        @Volatile private var mInstance: UserDatabase? = null
 
-        fun getInstance(context: Context): UserDb?{
+        fun getInstance(context: Context): UserDatabase?{
             if (mInstance == null){
                 synchronized(this){
                     if (mInstance == null){
@@ -22,8 +22,8 @@ abstract class UserDb : RoomDatabase() {
             return mInstance
         }
 
-        private fun buildDatabase(context: Context): UserDb {
-            return Room.databaseBuilder(context,UserDb::class.java,"user.db")
+        private fun buildDatabase(context: Context): UserDatabase {
+            return Room.databaseBuilder(context,UserDatabase::class.java,"user.db")
                 .build()
         }
     }

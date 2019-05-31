@@ -1,16 +1,17 @@
 package com.ruanchao.mvvmdemo.ui.login
 
 import com.ruanchao.mvvmdemo.bean.LoginRequestModel
-import com.ruanchao.mvvmdemo.bean.UserAccessToken
-import com.ruanchao.mvvmdemo.net.GithubApi
+import com.ruanchao.mvvmdemo.bean.UserInfo1
+import com.ruanchao.mvvmdemo.db.UserDao
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.Body
 
-class LoginRepo(private val remote: GithubApi){
+class LoginRepo(private val local: UserDao){
 
-    fun authorizations(userName: String, pwd:String): Observable<UserAccessToken> {
+    fun login(userInfo1: UserInfo1): UserInfo1?
+    = local.getUserInfo(userInfo1.userName!!, userInfo1.pwd!!)
 
-        var authRequestModel: LoginRequestModel = LoginRequestModel.generate()
-        return remote.authorizations(authRequestModel)
-    }
+    fun regist(userInfo1: UserInfo1) = local.insert(userInfo1)
+
 }

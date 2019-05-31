@@ -15,8 +15,8 @@ import com.daimajia.slider.library.Tricks.ViewPagerEx
 import com.ruanchao.mvvmdemo.bean.BannerInfo
 import com.ruanchao.mvvmdemo.R
 import com.ruanchao.mvvmdemo.databinding.HomeRecyclerItemLayoutBinding
-import com.ruanchao.mvvmdemo.home.BlogDetailActivity
-import com.ruanchao.mvvmdemo.home.HomeBlogViewModel
+import com.ruanchao.mvvmdemo.ui.home.BlogDetailActivity
+import com.ruanchao.mvvmdemo.ui.home.HomeBlogViewModel
 
 
 class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,

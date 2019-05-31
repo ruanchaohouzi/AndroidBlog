@@ -1,4 +1,4 @@
-package com.ruanchao.mvvmdemo.home
+package com.ruanchao.mvvmdemo.ui.home
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -22,6 +23,7 @@ import com.ruanchao.mvvmdemo.utils.obtainViewModel
 import kotlinx.android.synthetic.main.home_blog_fragment.view.*
 import kotlinx.android.synthetic.main.home_fragment_layout.*
 
+
 class HomeBlogFragment: Fragment() {
 
     private lateinit var dataBindingView: HomeBlogFragmentBinding
@@ -34,14 +36,16 @@ class HomeBlogFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val viewModelValue = obtainViewModel(this, HomeBlogViewModel::class.java)
         dataBindingView = HomeBlogFragmentBinding.inflate(inflater, container, false).apply {
-            viewModel = viewModelValue
+            viewModel = (activity as AppCompatActivity).obtainViewModel(HomeBlogViewModel::class.java)
             //必须要绑定生命周期，不写没效果,这样就可以增加监听器 监听数据的变化
             lifecycleOwner = this@HomeBlogFragment
         }
         return dataBindingView.root
     }
+
+
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -64,6 +68,9 @@ class HomeBlogFragment: Fragment() {
         StatusBarUtil.setPaddingSmart(activity as Activity, mHomeToolbar)
     }
 
+    /**
+     * 必须要设置 lifecycleOwner  这样观察者才会生效
+     */
     private fun initObserver() {
         //用于观察ViewModel中的数据变化,也可以采取BindingAdapter进行数据的通知操作
         //已采取BindingAdapter方式实现
@@ -75,7 +82,7 @@ class HomeBlogFragment: Fragment() {
 //        })
 
         //用于观察ViewModel中的刷新数据变化（上拉，下拉）
-        dataBindingView.viewModel?.refreshHomeDataList?.observe(dataBindingView.lifecycleOwner!!, Observer {
+        dataBindingView.viewModel?.refreshHomeDataList?.observe(this, Observer {
             if (it != null && it.size > 0) {
                 if (mCurrentPage == 0){
                     mBlogHomeAdapter?.refreshHomeDataLists(it)
@@ -148,7 +155,7 @@ class HomeBlogFragment: Fragment() {
                     mHomeToolbar.setBackgroundColor(
                         ContextCompat.getColor(
                             activity as Context,
-                            R.color.color_home_title_bg
+                            R.color.public_number_tab_bg
                         )
                     )
                     mHomeSearchIcon.setImageResource(R.mipmap.home_ic_action_search_black)

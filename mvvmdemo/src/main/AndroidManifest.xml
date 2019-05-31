@@ -13,7 +13,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="com.ruanchao.mvvmdemo.home.BlogDetailActivity">
+        <activity android:name="com.ruanchao.mvvmdemo.ui.home.BlogDetailActivity">
         </activity>
         <activity android:name=".animal.AnimalActivity">
         </activity>

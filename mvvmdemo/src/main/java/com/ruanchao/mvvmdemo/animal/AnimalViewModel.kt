@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.ruanchao.mvvmdemo.MainApplication
 import com.ruanchao.mvvmdemo.bean.*
-import com.ruanchao.mvvmdemo.db.UserDb
+import com.ruanchao.mvvmdemo.db.UserDatabase
 import com.ruanchao.mvvmdemo.utils.schedule
 import com.ruanchao.mvvmdemo.utils.set
 import io.reactivex.disposables.CompositeDisposable
@@ -19,7 +19,7 @@ class AnimalViewModel(private val animal: Animal): ViewModel(){
     }
 
     private val mModel: AnimalModel by lazy {
-        val userDao = UserDb.getInstance(MainApplication.context!!)!!.userDao()
+        val userDao = UserDatabase.getInstance(MainApplication.context!!)!!.userDao()
         AnimalModel(userDao)
     }
 

@@ -9,5 +9,5 @@ import com.ruanchao.mvvmdemo.factory.ViewModelFactory
 fun <T : ViewModel> obtainViewModel(fragment:Fragment, modelClass:Class<T>)=
     ViewModelProviders.of(fragment,ViewModelFactory.getInstance()).get(modelClass)
 
-fun <T : ViewModel> obtainViewModel(activity: AppCompatActivity, modelClass:Class<T>)=
-    ViewModelProviders.of(activity,ViewModelFactory.getInstance()).get(modelClass)
+fun <T : ViewModel> AppCompatActivity.obtainViewModel(modelClass:Class<T>)=
+    ViewModelProviders.of(this,ViewModelFactory.getInstance()).get(modelClass)

@@ -6,9 +6,12 @@ import com.ruanchao.mvvmdemo.net.NetWorkManager
 import com.ruanchao.mvvmdemo.MainApplication
 import com.ruanchao.mvvmdemo.bean.Animal
 import com.ruanchao.mvvmdemo.db.BlogContentDatabase
-import com.ruanchao.mvvmdemo.home.HomeBlogRepo
+import com.ruanchao.mvvmdemo.ui.home.HomeBlogRepo
 import com.ruanchao.mvvmdemo.animal.AnimalViewModel
-import com.ruanchao.mvvmdemo.home.HomeBlogViewModel
+import com.ruanchao.mvvmdemo.db.UserDatabase
+import com.ruanchao.mvvmdemo.ui.home.HomeBlogViewModel
+import com.ruanchao.mvvmdemo.ui.publicnumber.PublicNumberRepo
+import com.ruanchao.mvvmdemo.ui.publicnumber.PublicNumberViewModel
 import com.ruanchao.mvvmdemo.ui.login.LoginRepo
 import com.ruanchao.mvvmdemo.ui.login.LoginViewModel
 import java.lang.IllegalArgumentException
@@ -35,9 +38,13 @@ class ViewModelFactory private constructor() : ViewModelProvider.Factory{
                 return homeBlogViewModel as T
             }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-
-                val loginRepo = LoginRepo(NetWorkManager.getInstance().getGithubApi())
+                val loginRepo = LoginRepo(UserDatabase.getInstance(MainApplication.context!!)!!.userDao())
                 return LoginViewModel(loginRepo) as T
+            }
+
+            modelClass.isAssignableFrom(PublicNumberViewModel::class.java) ->{
+                val repo = PublicNumberRepo(NetWorkManager.getInstance().getWanAndroidApi())
+                return PublicNumberViewModel(repo) as T
             }
 
             else ->{

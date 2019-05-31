@@ -13,4 +13,17 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="bottomIconStyle">
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
+    </style>
+
+    <style name="bottomTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@drawable/bottom_text_color_selector</item>
+        <item name="android:layout_marginTop">3dp</item>
+    </style>
+
 </resources>
