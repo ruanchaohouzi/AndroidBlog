@@ -25,7 +25,7 @@ class PublicArticalListFragment : LazyLoadFragment() {
     lateinit var viewModel: PublicNumberViewModel
     var public_number_list:RecyclerView? = null
     var mRefresh: SwipeRefreshLayout? = null
-    var mCurrentPage: Int = 0
+    var mCurrentPage: Int = 1
     var mCurrentId: Int? = 408;
 
     companion object {
@@ -59,7 +59,7 @@ class PublicArticalListFragment : LazyLoadFragment() {
         }
         mRefresh = view!!.findViewById(R.id.srf_artical_refresh)
         mRefresh?.setOnRefreshListener {
-            mCurrentPage = 0
+            mCurrentPage = 1
             loadData()
         }
         public_number_list = view!!.findViewById(R.id.public_number_list)
@@ -93,7 +93,7 @@ class PublicArticalListFragment : LazyLoadFragment() {
         })
 
         viewModel.publicNumerArticalInfo.observe(this, Observer {
-            if (mCurrentPage == 0) {
+            if (mCurrentPage == 1) {
                 listAdapter.resetDatas(it?.datas)
             }else{
                 listAdapter.addDatas(it?.datas)
