@@ -23,13 +23,14 @@ import com.ruanchao.mvvmdemo.utils.obtainViewModel
 import com.ruanchao.mvvmdemo.view.LazyLoadFragment
 
 
-class PublicArticalListFragment: Fragment() {
+class PublicArticalListFragment: LazyLoadFragment() {
 
     lateinit var viewModel: PublicNumberViewModel
     var public_number_list: RecyclerView? = null
     var mRefresh: SwipeRefreshLayout? = null
     var mCurrentPage: Int = 1
     var mCurrentId: Int? = 408;
+    private val _TAG = PublicArticalListFragment::class.java.simpleName
 
     companion object {
         fun newInstance(id: Int): PublicArticalListFragment {
@@ -41,7 +42,7 @@ class PublicArticalListFragment: Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun initView(inflater: LayoutInflater, container: ViewGroup?): View? {
         viewModel = (activity as AppCompatActivity).obtainViewModel(PublicNumberViewModel::class.java)
         val inflate = PublicNumberArticalListFragmentLayoutBinding
             .inflate(LayoutInflater.from(activity), container, false)
@@ -53,15 +54,10 @@ class PublicArticalListFragment: Fragment() {
         return inflate.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        loadData()
-    }
-
-
     private fun init(view: View) {
         mCurrentId = getArguments()?.getInt("id")
-        val listAdapter = PublicNumberListAdapter(activity as Context, viewModel).apply {
+        Log.i(_TAG, "mCurrentId:$mCurrentId")
+        val listAdapter = PublicNumberListAdapter(activity as Context).apply {
             setOnItemClickListener {
                 BlogDetailActivity.start(activity as Context, it.link)
             }
@@ -73,13 +69,10 @@ class PublicArticalListFragment: Fragment() {
         }
         public_number_list = view!!.findViewById(R.id.public_number_list)
         public_number_list?.run {
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
+            layoutManager = LinearLayoutManager(activity)
             adapter = listAdapter
             addItemDecoration(
-                androidx.recyclerview.widget.DividerItemDecoration(
-                    activity,
-                    androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
-                )
+                DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
             )
         }
 
@@ -107,25 +100,27 @@ class PublicArticalListFragment: Fragment() {
         })
 
         viewModel.publicNumerArticalInfo.observe(this, Observer {
+            if (!isCanLoadData){
+                return@Observer
+            }
             if (mCurrentPage == 1) {
                 listAdapter.resetDatas(it?.datas)
             }else{
                 listAdapter.addDatas(it?.datas)
             }
-//            if (it != null) {
-//                mLoadStateView?.viewState = MultiStateView.STATE_CONTENT
-//            }
         })
 
         viewModel?.error?.observe(this, Observer {
+            if (!isCanLoadData){
+                return@Observer
+            }
             if (!TextUtils.isEmpty(it)) {
                 Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
-//                mLoadStateView?.viewState = MultiStateView.STATE_FAIL
             }
         })
     }
 
-    fun loadData(){
+    override fun loadData(){
         Log.i("mCurrentId", "mCurrentId:" + mCurrentId)
         viewModel.getPublicNumberDataList(mCurrentId ?: 408, mCurrentPage)
     }

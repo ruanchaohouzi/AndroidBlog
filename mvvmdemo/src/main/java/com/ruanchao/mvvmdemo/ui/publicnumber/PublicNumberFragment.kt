@@ -4,13 +4,16 @@ import android.app.Activity
 import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.daimajia.slider.library.Tricks.ViewPagerEx
 import com.ruanchao.mvvmdemo.bean.PublicNumberInfo
 import com.ruanchao.mvvmdemo.databinding.PublicNumberFragmentLayoutBinding
 import com.ruanchao.mvvmdemo.utils.obtainViewModel
@@ -23,7 +26,9 @@ import com.google.android.material.tabs.TabLayout
 
 class PublicNumberFragment: Fragment() {
 
-    lateinit var mViewBinding: PublicNumberFragmentLayoutBinding
+    private val _TAG = PublicNumberFragment::class.java.simpleName
+
+        lateinit var mViewBinding: PublicNumberFragmentLayoutBinding
     var fragments = mutableListOf<Fragment>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,30 +68,36 @@ class PublicNumberFragment: Fragment() {
         }
 
         with(viewPager){
-            var adapter = PublicNumberAdapter(fragments, this@PublicNumberFragment)
+            var adapter = PublicNumberAdapter(fragments, childFragmentManager)
             setAdapter(adapter)
-            val recycler = getChildAt(0) as RecyclerView
-            //关闭离屏加载的预加载缓存
-            recycler.layoutManager?.isItemPrefetchEnabled = false
-            //关闭Recycler自带的item缓存
-            recycler.setItemViewCacheSize(0)
+            addOnPageChangeListener(
+                object : ViewPager.OnPageChangeListener {
+                    override fun onPageScrollStateChanged(state: Int) {
+                    }
 
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    tab.setScrollPosition(position,0f, false)
+                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    }
+
+                    override fun onPageSelected(position: Int) {
+                        tab.setScrollPosition(position,0f, false)
+                    }
+
                 }
-            })
+            )
         }
+
         tab.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabReselected(p0: TabLayout.Tab?) {
-                viewPager.currentItem = p0?.position ?: 0
+
             }
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {
             }
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
+                Log.i(_TAG,"page:" + p0?.position)
+
+                viewPager.currentItem = p0?.position ?: 0
             }
 
         })

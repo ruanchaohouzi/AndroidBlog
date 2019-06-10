@@ -38,8 +38,8 @@ class NetWorkManager private constructor(){
         val okHttpClient: OkHttpClient = OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 //必须添加Network网络拦截器和cache配合使用
-//            .addNetworkInterceptor(getCacheInterceptor())
-//            .cache(Cache(cacheFile, CACHE_MAX_SIZE))
+            .addNetworkInterceptor(getCacheInterceptor())
+            .cache(Cache(cacheFile, CACHE_MAX_SIZE))
             .build()
 
         mWanAndroidRetrofit = buildRetrofit(okHttpClient, Constants.BASE_WAN_ANDROID_URL)
