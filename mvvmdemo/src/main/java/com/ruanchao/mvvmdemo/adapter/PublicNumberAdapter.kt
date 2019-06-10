@@ -1,14 +1,17 @@
 package com.ruanchao.mvvmdemo.adapter
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.app.FragmentStatePagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class PublicNumberAdapter(val fragments:List<Fragment>,val fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class PublicNumberAdapter(val fragments:List<Fragment>, val fm: Fragment) :
+    FragmentStateAdapter(fm) {
+    override fun getItemCount(): Int = fragments.size
 
-    override fun getCount(): Int = fragments.size
+    override fun createFragment(position: Int): Fragment = fragments.get(position)
 
-    override fun getItem(p0: Int): Fragment  = fragments.get(p0)
+
 
 }

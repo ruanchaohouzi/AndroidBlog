@@ -2,13 +2,13 @@ package com.ruanchao.mvvmdemo.view
 
 import android.os.Bundle
 
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
 
 
-abstract class LazyLoadFragment : Fragment() {
+abstract class LazyLoadFragment : androidx.fragment.app.Fragment() {
     private var isViewCreated: Boolean = false // 界面是否已创建完成
     private var isVisibleToUser: Boolean = false // 是否对用户可见
 

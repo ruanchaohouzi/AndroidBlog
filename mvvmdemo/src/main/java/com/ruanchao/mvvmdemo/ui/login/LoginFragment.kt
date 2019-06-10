@@ -1,9 +1,9 @@
 package com.ruanchao.mvvmdemo.ui.login
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +12,7 @@ import com.ruanchao.mvvmdemo.bean.UserInfo1
 import com.ruanchao.mvvmdemo.databinding.LoginFragmentLayoutBinding
 import com.ruanchao.mvvmdemo.utils.obtainViewModel
 
-class LoginFragment: Fragment() {
+class LoginFragment: androidx.fragment.app.Fragment() {
 
     private var mBindingView: LoginFragmentLayoutBinding? = null
 

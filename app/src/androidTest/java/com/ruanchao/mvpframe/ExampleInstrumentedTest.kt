@@ -1,7 +1,7 @@
 package com.ruanchao.mvpframe
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
 import com.ruanchao.mvpframe.test.User
 
 import org.junit.Test

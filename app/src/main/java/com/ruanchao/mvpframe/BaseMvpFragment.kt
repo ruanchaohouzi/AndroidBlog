@@ -1,12 +1,12 @@
 package com.ruanchao.mvpframe
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.View
 import com.ruanchao.mvpframe.basemvp.basepresenter.BasePresenter
 import com.ruanchao.mvpframe.basemvp.baseview.IBaseView
 
-abstract class BaseMvpFragment<V: IBaseView, P: BasePresenter<V>>: Fragment() {
+abstract class BaseMvpFragment<V: IBaseView, P: BasePresenter<V>>: androidx.fragment.app.Fragment() {
 
     var mPresenter: P? = null;
 

@@ -9,7 +9,7 @@ import com.daimajia.slider.library.SliderLayout
 import com.ruanchao.mvvmdemo.bean.HomeData
 import com.ruanchao.mvvmdemo.bean.ProjectInfo
 import com.daimajia.slider.library.SliderTypes.BaseSliderView
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import com.daimajia.slider.library.SliderTypes.TextSliderView
 import com.daimajia.slider.library.Tricks.ViewPagerEx
 import com.ruanchao.mvvmdemo.bean.BannerInfo
@@ -20,7 +20,7 @@ import com.ruanchao.mvvmdemo.ui.home.HomeBlogViewModel
 
 
 class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,
-                                  viewModel: HomeBlogViewModel?): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                                  viewModel: HomeBlogViewModel?): androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     private var mHomeDataList: MutableList<HomeData> = mutableListOf()
     var mContext: Context? = null
@@ -55,7 +55,7 @@ class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,
         return if (mHomeDataList.size == 0) 0 else mHomeDataList.size + 1
     }
 
-    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
 
         if (viewHolder is ProjectViewHolder) {
             val projectInfo: ProjectInfo = mHomeDataList[position].itemValue as ProjectInfo
@@ -69,7 +69,7 @@ class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,
         }
     }
 
-    override fun onCreateViewHolder(container: ViewGroup, type: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(container: ViewGroup, type: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
 
         when(type){
             HomeData.VIEW_TYPE_BANNER_LIST ->{
@@ -94,7 +94,7 @@ class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,
         }
     }
 
-    private fun bindBannerViewHolder(position: Int, viewHolder: RecyclerView.ViewHolder) {
+    private fun bindBannerViewHolder(position: Int, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
         val banners: List<BannerInfo> = mHomeDataList[position].itemValue as List<BannerInfo>
         val bannerViewHolder: BannerViewHolder = viewHolder as BannerViewHolder
         val mHomeSlider = bannerViewHolder.mHomeSlider
@@ -137,19 +137,19 @@ class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,
     }
 
     class ProjectViewHolder(var dataBinding: HomeRecyclerItemLayoutBinding)
-        : RecyclerView.ViewHolder(dataBinding.root) {
+        : androidx.recyclerview.widget.RecyclerView.ViewHolder(dataBinding.root) {
         fun bind(projectInfo: ProjectInfo) {
             dataBinding.projectInfo = projectInfo
         }
     }
 
-    class FootViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class FootViewHolder(view: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
         val recyclerFootText: TextView = view.findViewById(R.id.tv_home_recycler_foot_view)
 
     }
 
-    class BannerViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class BannerViewHolder(view: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
         val mHomeSlider: SliderLayout = view.findViewById(R.id.home_slider)
     }
 

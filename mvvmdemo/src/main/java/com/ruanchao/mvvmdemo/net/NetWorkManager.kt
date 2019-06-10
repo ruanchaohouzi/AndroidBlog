@@ -49,9 +49,6 @@ class NetWorkManager private constructor(){
 
     fun getWanAndroidApi(): WanAndroidApi = mWanAndroidRetrofit!!.create(WanAndroidApi::class.java)
 
-    fun getTucaoApi() = mWanAndroidRetrofit!!.create(TucaoApi::class.java)
-
-
     fun buildRetrofit(okHttpClient: OkHttpClient, baseUrl: String) = Retrofit.Builder()
         .client(okHttpClient)
         .baseUrl(baseUrl)

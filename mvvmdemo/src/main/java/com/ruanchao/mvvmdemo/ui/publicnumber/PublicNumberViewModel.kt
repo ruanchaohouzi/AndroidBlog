@@ -1,7 +1,7 @@
 package com.ruanchao.mvvmdemo.ui.publicnumber
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import android.util.Log
 import com.ruanchao.mvvmdemo.bean.BaseNetBean
 import com.ruanchao.mvvmdemo.bean.PublicNumberInfo

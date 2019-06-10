@@ -1,6 +1,6 @@
 package com.ruanchao.mvvmdemo.db
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import android.content.Context
 import com.ruanchao.mvvmdemo.bean.UserInfo1
 

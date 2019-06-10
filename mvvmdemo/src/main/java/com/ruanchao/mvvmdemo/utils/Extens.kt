@@ -1,7 +1,7 @@
 package com.ruanchao.mvvmdemo.utils
 
-import android.arch.lifecycle.MutableLiveData
-import android.databinding.BindingAdapter
+import androidx.lifecycle.MutableLiveData
+import androidx.databinding.BindingAdapter
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast

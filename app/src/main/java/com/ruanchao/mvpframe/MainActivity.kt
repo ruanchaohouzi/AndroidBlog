@@ -2,9 +2,9 @@ package com.ruanchao.mvpframe
 
 import android.graphics.Color
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.View
 import com.ruanchao.mvpframe.Home.HomeFragment
 import com.ruanchao.mvpframe.utils.StatusBarUtil
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
 
         mBottomTabLayoutView = findViewById<BottomTabLayoutView>(R.id.home_tab_layout)
-        val fragments = ArrayList<Fragment>()
+        val fragments = ArrayList<androidx.fragment.app.Fragment>()
         fragments.add(HomeFragment())
 
         val page2 = Page1()

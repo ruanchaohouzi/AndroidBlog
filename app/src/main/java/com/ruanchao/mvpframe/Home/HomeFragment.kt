@@ -3,11 +3,11 @@ package com.ruanchao.mvpframe.Home
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.ContextCompat.getColor
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,10 +43,14 @@ class HomeFragment: BaseMvpFragment<IHomeView,HomePresenter>(), IHomeView {
 
         mHomeAdapter = HomeAdapter(homeDataList,activity as Context)
         projectRecyclerView.run {
-            layoutManager = LinearLayoutManager(activity)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
             adapter = mHomeAdapter
         }
-        var dividerItemDecoration: DividerItemDecoration = DividerItemDecoration(activity,DividerItemDecoration.VERTICAL)
+        var dividerItemDecoration: androidx.recyclerview.widget.DividerItemDecoration =
+            androidx.recyclerview.widget.DividerItemDecoration(
+                activity,
+                androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
+            )
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(activity as Context, R.drawable.home_recycler_item_divider)!!)
         projectRecyclerView.addItemDecoration(dividerItemDecoration)
         mHomeAdapter!!.setOnItemClickListener { position, projectInfo ->
@@ -108,15 +112,15 @@ class HomeFragment: BaseMvpFragment<IHomeView,HomePresenter>(), IHomeView {
 
     override fun onGetBannerListFail(errMsg: String?) {}
 
-    var mRecyclerViewScrollListener: RecyclerView.OnScrollListener = object: RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+    var mRecyclerViewScrollListener: androidx.recyclerview.widget.RecyclerView.OnScrollListener = object: androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: androidx.recyclerview.widget.RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             //当前RecyclerView显示出来的最后一个的item的position
             var lastPosition: Int = -1;
             //当前状态为停止滑动状态SCROLL_STATE_IDLE时
-            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                var layoutManager: RecyclerView.LayoutManager? = recyclerView.layoutManager;
-                lastPosition = (layoutManager as LinearLayoutManager).findLastVisibleItemPosition();
+            if (newState == androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE) {
+                var layoutManager: androidx.recyclerview.widget.RecyclerView.LayoutManager? = recyclerView.layoutManager;
+                lastPosition = (layoutManager as androidx.recyclerview.widget.LinearLayoutManager).findLastVisibleItemPosition();
                 //时判断界面显示的最后item的position是否等于itemCount总数-1也就是最后一个item的position
                 //如果相等则说明已经滑动到最后了
                 if (lastPosition == recyclerView.getLayoutManager()!!.itemCount - 1) {
@@ -125,9 +129,9 @@ class HomeFragment: BaseMvpFragment<IHomeView,HomePresenter>(), IHomeView {
             }
         }
 
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val linearLayoutManager = recyclerView.layoutManager as androidx.recyclerview.widget.LinearLayoutManager
             val firstPosition = linearLayoutManager.findFirstVisibleItemPosition();
             if (firstPosition == 0) {
                 mHomeToolbar.setBackgroundColor(getColor(activity as Context, R.color.color_translucent))

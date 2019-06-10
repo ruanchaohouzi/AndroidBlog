@@ -1,7 +1,7 @@
 package com.ruanchao.mvpframe.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +22,7 @@ import com.daimajia.slider.library.Tricks.ViewPagerEx
 import com.ruanchao.mvpframe.bean.BannerInfo
 
 
-class HomeAdapter constructor(data: MutableList<HomeData>, context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeAdapter constructor(data: MutableList<HomeData>, context: Context): androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     var mHomeDataList: MutableList<HomeData> = mutableListOf()
     var mContext: Context? = null;
@@ -56,7 +56,7 @@ class HomeAdapter constructor(data: MutableList<HomeData>, context: Context): Re
         return if (mHomeDataList.size == 0) 0 else mHomeDataList.size + 1
     }
 
-    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
 
         if (viewHolder is ProjectViewHolder) {
             bindProjectViewHolder(viewHolder, position)
@@ -65,7 +65,7 @@ class HomeAdapter constructor(data: MutableList<HomeData>, context: Context): Re
         }
     }
 
-    override fun onCreateViewHolder(container: ViewGroup, type: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(container: ViewGroup, type: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
 
         when(type){
             HomeData.VIEW_TYPE_BANNER_LIST ->{
@@ -87,7 +87,7 @@ class HomeAdapter constructor(data: MutableList<HomeData>, context: Context): Re
         }
     }
 
-    private fun bindProjectViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+    private fun bindProjectViewHolder(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         var mProjectViewHolder: ProjectViewHolder = viewHolder as ProjectViewHolder
         var projectInfo: ProjectInfo = mHomeDataList!!.get(position).itemValue as ProjectInfo
         mProjectViewHolder.mTitleView.setText(projectInfo.title)
@@ -101,7 +101,7 @@ class HomeAdapter constructor(data: MutableList<HomeData>, context: Context): Re
         })
     }
 
-    private fun bindBannerViewHolder(position: Int, viewHolder: RecyclerView.ViewHolder) {
+    private fun bindBannerViewHolder(position: Int, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
         var banners: List<BannerInfo> = mHomeDataList!!.get(position).itemValue as List<BannerInfo>;
         var bannerViewHolder: BannerViewHolder = viewHolder as BannerViewHolder
         var mHomeSlider = bannerViewHolder.mHomeSlider
@@ -146,7 +146,7 @@ class HomeAdapter constructor(data: MutableList<HomeData>, context: Context): Re
         mOnItemClickListener = onItemClickListener
     }
 
-    class ProjectViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class ProjectViewHolder(view: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
         val itemViewLayout: View = view
         val mTitleView: TextView
@@ -163,7 +163,7 @@ class HomeAdapter constructor(data: MutableList<HomeData>, context: Context): Re
 
     }
 
-    class FootViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class FootViewHolder(view: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
         val recyclerFootText: TextView
 
@@ -172,7 +172,7 @@ class HomeAdapter constructor(data: MutableList<HomeData>, context: Context): Re
         }
     }
 
-    class BannerViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class BannerViewHolder(view: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
         val mHomeSlider: SliderLayout
         init {
             mHomeSlider = view.findViewById<SliderLayout>(R.id.home_slider)

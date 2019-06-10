@@ -8,21 +8,20 @@
         <variable name="viewModel" type="com.ruanchao.mvvmdemo.ui.home.HomeBlogViewModel"/>
     </data>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-                                                  android:id="@+id/srf_home_refresh"
-                                                  android:layout_width="match_parent"
-                                                  android:layout_height="match_parent"
-                                                  app:refreshing="@{viewModel.isRefreshing}">
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srf_home_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:refreshing="@{viewModel.isRefreshing}">
 
         <FrameLayout android:layout_width="match_parent"
                      android:layout_height="match_parent">
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/projectRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:homeDatas="@{viewModel.homeDataList}"/>
+                    android:layout_height="match_parent"/>
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                     android:id="@+id/mHomeToolbar"
                     android:background="@color/color_translucent"
                     android:layout_width="match_parent"
@@ -47,11 +46,10 @@
                             android:paddingRight="10dp"
                     />
                 </RelativeLayout>
-            </android.support.v7.widget.Toolbar>
+            </androidx.appcompat.widget.Toolbar>
 
         </FrameLayout>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </layout>

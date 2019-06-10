@@ -1,13 +1,11 @@
 package com.ruanchao.mvvmdemo.factory
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.ruanchao.mvvmdemo.net.NetWorkManager
 import com.ruanchao.mvvmdemo.MainApplication
-import com.ruanchao.mvvmdemo.bean.Animal
 import com.ruanchao.mvvmdemo.db.BlogContentDatabase
 import com.ruanchao.mvvmdemo.ui.home.HomeBlogRepo
-import com.ruanchao.mvvmdemo.animal.AnimalViewModel
 import com.ruanchao.mvvmdemo.db.UserDatabase
 import com.ruanchao.mvvmdemo.ui.home.HomeBlogViewModel
 import com.ruanchao.mvvmdemo.ui.publicnumber.PublicNumberRepo
@@ -20,11 +18,6 @@ class ViewModelFactory private constructor() : ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
         when{
-            modelClass.isAssignableFrom(AnimalViewModel::class.java) -> {
-                val animal = Animal("dog", 0)
-                val viewModel = AnimalViewModel(animal)
-                return viewModel as T
-            }
             //........可以创建更多的ViewModel......
 
             modelClass.isAssignableFrom(HomeBlogViewModel::class.java) -> {

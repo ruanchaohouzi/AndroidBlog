@@ -1,7 +1,7 @@
 package com.ruanchao.mvvmdemo.ui.home
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -46,7 +46,7 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
             var newResMsg: MutableList<HomeData>? = mutableListOf()
             if (it != null && it.size > 0) {
                 newResMsg = parseContent(it[0].content)
-                Log.i(_TAG, "get from local")
+                Log.i(_TAG, "get from local:" + newResMsg.size)
             }
             newResMsg
         }
@@ -79,7 +79,8 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
 
         //concat 先从本地数据库拿缓存数据   然后再从网络拿数据   每次请求必须要有Complete，不然不知道当前任务是否完成
         Observable.concat(getBlogContentFromLocal, getBlogContentFromRemote)
-            .schedule()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread(), true)//  true这个参数非常非常重要，防止网络中断，提前进入onComplete,而没有执行onNext
             .doFinally {
                 //在 RxJava 中 doFinally 和 doAfterTerminate 这两个操作符很类似，
                 //都会在 Observable 的 onComplete 或 onError 调用之后进行调用。
@@ -90,12 +91,14 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
                     override fun onSubscribe(d: Disposable) {}
 
                     override fun onNext(homeDatas: MutableList<HomeData>) {
+                        Log.i(_TAG, "onNext")
                         if (homeDatas != null && homeDatas.size > 0) {
                             _homeDataList.set(homeDatas)
                         }
                     }
 
                     override fun onError(e: Throwable) {
+                        Log.i(_TAG, "onError:" + e.localizedMessage)
                         errorInfo.set(e.message)
                     }
 
