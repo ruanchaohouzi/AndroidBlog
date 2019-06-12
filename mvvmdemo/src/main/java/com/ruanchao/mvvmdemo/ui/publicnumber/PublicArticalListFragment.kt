@@ -15,9 +15,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.ruanchao.mvvmdemo.R
 import com.ruanchao.mvvmdemo.adapter.PublicNumberListAdapter
 import com.ruanchao.mvvmdemo.databinding.PublicNumberArticalListFragmentLayoutBinding
+import com.ruanchao.mvvmdemo.factory.ViewModelFactory
+import com.ruanchao.mvvmdemo.ui.base.BaseFragment
 import com.ruanchao.mvvmdemo.ui.home.BlogDetailActivity
 import com.ruanchao.mvvmdemo.utils.obtainViewModel
 import com.ruanchao.mvvmdemo.view.LazyLoadFragment
@@ -25,7 +28,7 @@ import com.ruanchao.mvvmdemo.view.MultiStateView
 import kotlinx.android.synthetic.main.public_number_artical_list_fragment_layout.*
 
 
-class PublicArticalListFragment: LazyLoadFragment() {
+class PublicArticalListFragment: BaseFragment() {
 
     lateinit var viewModel: PublicNumberViewModel
     var mCurrentPage: Int = 1
@@ -43,8 +46,7 @@ class PublicArticalListFragment: LazyLoadFragment() {
     }
 
     override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        viewModel = (activity as AppCompatActivity).obtainViewModel(PublicNumberViewModel::class.java)
-        Log.i("OfficialCodeListFrag", "vm:" + viewModel.toString());
+        viewModel = obtainViewModel(this,PublicNumberViewModel::class.java)
         val inflate = PublicNumberArticalListFragmentLayoutBinding
             .inflate(LayoutInflater.from(activity), container, false)
             .apply {
@@ -55,7 +57,6 @@ class PublicArticalListFragment: LazyLoadFragment() {
     }
 
     override fun initData() {
-        super.initData()
         mCurrentId = getArguments()?.getInt("id")
         Log.i(_TAG, "mCurrentId:$mCurrentId")
         val listAdapter = PublicNumberListAdapter(activity as Context).apply {
@@ -99,35 +100,31 @@ class PublicArticalListFragment: LazyLoadFragment() {
         })
 
         viewModel.publicNumerArticalInfo.observe(this, Observer {
-            //避免缓存加载下一页面的数据
-            if (!isCanLoadData){
-                return@Observer
-            }
-            if (mCurrentPage == 1) {
-                listAdapter.resetDatas(it?.datas)
-                stateView.viewState = MultiStateView.VIEW_STATE_CONTENT
-            }else{
-                listAdapter.addDatas(it?.datas)
+            it?.let {
+                if (mCurrentPage == 1) {
+                    listAdapter.resetDatas(it?.datas)
+                    stateView.viewState = MultiStateView.VIEW_STATE_CONTENT
+                }else{
+                    listAdapter.addDatas(it?.datas)
+                }
             }
         })
 
         viewModel?.error?.observe(this, Observer {
             //避免缓存加载下一页面的数据
-            if (!isCanLoadData){
-                return@Observer
-            }
-            if (!TextUtils.isEmpty(it)) {
+            it?.let {
                 stateView.viewState = MultiStateView.VIEW_STATE_ERROR
                 Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
             }
         })
+        loadData()
     }
 
     override fun reload() {
         loadData()
     }
 
-    override fun loadData(){
+    fun loadData(){
         Log.i("mCurrentId", "mCurrentId:" + mCurrentId)
         viewModel.getPublicNumberDataList(mCurrentId ?: 408, mCurrentPage)
     }

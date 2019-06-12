@@ -59,7 +59,7 @@ class HomeBlogFragment: BaseFragment() {
 
     override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         dataBindingView = HomeBlogFragmentBinding.inflate(inflater, container, false).apply {
-            viewModel = (activity as AppCompatActivity).obtainViewModel(HomeBlogViewModel::class.java)
+            viewModel = obtainViewModel(this@HomeBlogFragment,HomeBlogViewModel::class.java)
             //必须要绑定生命周期，不写没效果,这样就可以增加监听器 监听数据的变化
             lifecycleOwner = this@HomeBlogFragment
         }

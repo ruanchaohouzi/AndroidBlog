@@ -34,6 +34,14 @@ class PublicNumberFragment: BaseFragment() {
     lateinit var mViewBinding: PublicNumberFragmentLayoutBinding
     var fragments = mutableListOf<Fragment>()
 
+    override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        mViewBinding = PublicNumberFragmentLayoutBinding.inflate(inflater, container, false).apply {
+            viewModel = obtainViewModel(this@PublicNumberFragment, PublicNumberViewModel::class.java)
+            lifecycleOwner = this@PublicNumberFragment
+        }
+        return mViewBinding.root
+    }
+
     override fun initData() {
         StatusBarUtil.immersive(activity as Activity, activity!!.getColor(R.color.public_number_tab_bg))
         StatusBarUtil.setPaddingSmart(activity as Activity, tab)
@@ -52,14 +60,6 @@ class PublicNumberFragment: BaseFragment() {
                 stateView.viewState = MultiStateView.VIEW_STATE_ERROR
             }
         })
-    }
-
-    override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        mViewBinding = PublicNumberFragmentLayoutBinding.inflate(inflater, container, false).apply {
-            viewModel = obtainViewModel(this@PublicNumberFragment, PublicNumberViewModel::class.java)
-            lifecycleOwner = this@PublicNumberFragment
-        }
-        return mViewBinding.root
     }
 
     override fun reload() {

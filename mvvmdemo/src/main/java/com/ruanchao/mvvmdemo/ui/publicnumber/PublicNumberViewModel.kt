@@ -14,8 +14,12 @@ import io.reactivex.disposables.Disposable
 class PublicNumberViewModel(val repo: PublicNumberRepo): ViewModel(){
 
     var publicNumberInfos = MutableLiveData<List<PublicNumberInfo>>()
-    var error = MutableLiveData<String>()
-    var publicNumerArticalInfo = MutableLiveData<PublicNumerArticalInfo>()
+    var error = MutableLiveData<String>().apply {
+        value = null
+    }
+    var publicNumerArticalInfo = MutableLiveData<PublicNumerArticalInfo>().apply {
+        value = null
+    }
     var isRefreshing = MutableLiveData<Boolean>()
     var isPublicNumberDataListLoading = false
 
