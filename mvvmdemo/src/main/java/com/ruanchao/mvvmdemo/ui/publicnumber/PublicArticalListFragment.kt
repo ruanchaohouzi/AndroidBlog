@@ -21,13 +21,13 @@ import com.ruanchao.mvvmdemo.databinding.PublicNumberArticalListFragmentLayoutBi
 import com.ruanchao.mvvmdemo.ui.home.BlogDetailActivity
 import com.ruanchao.mvvmdemo.utils.obtainViewModel
 import com.ruanchao.mvvmdemo.view.LazyLoadFragment
+import com.ruanchao.mvvmdemo.view.MultiStateView
+import kotlinx.android.synthetic.main.public_number_artical_list_fragment_layout.*
 
 
 class PublicArticalListFragment: LazyLoadFragment() {
 
     lateinit var viewModel: PublicNumberViewModel
-    var public_number_list: RecyclerView? = null
-    var mRefresh: SwipeRefreshLayout? = null
     var mCurrentPage: Int = 1
     var mCurrentId: Int? = 408;
     private val _TAG = PublicArticalListFragment::class.java.simpleName
@@ -42,19 +42,20 @@ class PublicArticalListFragment: LazyLoadFragment() {
         }
     }
 
-    override fun initView(inflater: LayoutInflater, container: ViewGroup?): View? {
+    override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         viewModel = (activity as AppCompatActivity).obtainViewModel(PublicNumberViewModel::class.java)
+        Log.i("OfficialCodeListFrag", "vm:" + viewModel.toString());
         val inflate = PublicNumberArticalListFragmentLayoutBinding
             .inflate(LayoutInflater.from(activity), container, false)
             .apply {
                 lifecycleOwner = this@PublicArticalListFragment
             }
         inflate.viewModel = viewModel
-        init(inflate.root)
         return inflate.root
     }
 
-    private fun init(view: View) {
+    override fun initData() {
+        super.initData()
         mCurrentId = getArguments()?.getInt("id")
         Log.i(_TAG, "mCurrentId:$mCurrentId")
         val listAdapter = PublicNumberListAdapter(activity as Context).apply {
@@ -62,12 +63,10 @@ class PublicArticalListFragment: LazyLoadFragment() {
                 BlogDetailActivity.start(activity as Context, it.link)
             }
         }
-        mRefresh = view.findViewById(R.id.srf_artical_refresh)
-        mRefresh?.setOnRefreshListener {
+        srf_artical_refresh?.setOnRefreshListener {
             mCurrentPage = 1
             loadData()
         }
-        public_number_list = view!!.findViewById(R.id.public_number_list)
         public_number_list?.run {
             layoutManager = LinearLayoutManager(activity)
             adapter = listAdapter
@@ -76,17 +75,17 @@ class PublicArticalListFragment: LazyLoadFragment() {
             )
         }
 
-        public_number_list?.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: androidx.recyclerview.widget.RecyclerView, newState: Int) {
+        public_number_list?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 //当前RecyclerView显示出来的最后一个的item的position
                 var lastPosition: Int = -1
                 //当前状态为停止滑动状态SCROLL_STATE_IDLE时
-                if (newState != androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState != RecyclerView.SCROLL_STATE_IDLE) {
                     return
                 }
-                val layoutManager: androidx.recyclerview.widget.RecyclerView.LayoutManager? = recyclerView.layoutManager
-                lastPosition = (layoutManager as androidx.recyclerview.widget.LinearLayoutManager).findLastVisibleItemPosition()
+                val layoutManager: RecyclerView.LayoutManager? = recyclerView.layoutManager
+                lastPosition = (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                 //时判断界面显示的最后item的position是否等于itemCount总数-1也就是倒数第三个item的position，开始预加载
                 //如果相等则说明已经滑动到最后了
                 if (lastPosition >= recyclerView.layoutManager!!.itemCount - 3) {
@@ -100,24 +99,32 @@ class PublicArticalListFragment: LazyLoadFragment() {
         })
 
         viewModel.publicNumerArticalInfo.observe(this, Observer {
+            //避免缓存加载下一页面的数据
             if (!isCanLoadData){
                 return@Observer
             }
             if (mCurrentPage == 1) {
                 listAdapter.resetDatas(it?.datas)
+                stateView.viewState = MultiStateView.VIEW_STATE_CONTENT
             }else{
                 listAdapter.addDatas(it?.datas)
             }
         })
 
         viewModel?.error?.observe(this, Observer {
+            //避免缓存加载下一页面的数据
             if (!isCanLoadData){
                 return@Observer
             }
             if (!TextUtils.isEmpty(it)) {
+                stateView.viewState = MultiStateView.VIEW_STATE_ERROR
                 Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    override fun reload() {
+        loadData()
     }
 
     override fun loadData(){

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -22,43 +23,47 @@ import com.ruanchao.mvpframe.utils.StatusBarUtil
 import com.ruanchao.mvvmdemo.R
 import com.ruanchao.mvvmdemo.adapter.PublicNumberAdapter
 import com.google.android.material.tabs.TabLayout
+import com.ruanchao.mvvmdemo.ui.base.BaseFragment
+import com.ruanchao.mvvmdemo.view.MultiStateView
 
 
-class PublicNumberFragment: Fragment() {
+class PublicNumberFragment: BaseFragment() {
 
     private val _TAG = PublicNumberFragment::class.java.simpleName
 
-        lateinit var mViewBinding: PublicNumberFragmentLayoutBinding
+    lateinit var mViewBinding: PublicNumberFragmentLayoutBinding
     var fragments = mutableListOf<Fragment>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mViewBinding = PublicNumberFragmentLayoutBinding.inflate(inflater, container, false).apply {
-            viewModel = obtainViewModel(this@PublicNumberFragment, PublicNumberViewModel::class.java)
-            lifecycleOwner = this@PublicNumberFragment
-        }
-        initView(mViewBinding.root)
-        return mViewBinding.root
-    }
-
-    private fun initView(root: View) {
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun initData() {
         StatusBarUtil.immersive(activity as Activity, activity!!.getColor(R.color.public_number_tab_bg))
         StatusBarUtil.setPaddingSmart(activity as Activity, tab)
+
         mViewBinding?.viewModel?.getPublicNumberList()
         mViewBinding?.viewModel?.publicNumberInfos?.observe(this, Observer {
             if(it != null) {
                 setTab(it)
+                stateView.viewState = MultiStateView.VIEW_STATE_CONTENT
             }
         })
 
         mViewBinding?.viewModel?.error?.observe(this, Observer {
             if (!TextUtils.isEmpty(it)) {
                 Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
+                stateView.viewState = MultiStateView.VIEW_STATE_ERROR
             }
         })
+    }
+
+    override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        mViewBinding = PublicNumberFragmentLayoutBinding.inflate(inflater, container, false).apply {
+            viewModel = obtainViewModel(this@PublicNumberFragment, PublicNumberViewModel::class.java)
+            lifecycleOwner = this@PublicNumberFragment
+        }
+        return mViewBinding.root
+    }
+
+    override fun reload() {
+        mViewBinding?.viewModel?.getPublicNumberList()
     }
 
     fun setTab(publicNumberInfos: List<PublicNumberInfo>){

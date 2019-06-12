@@ -6,9 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
+import com.ruanchao.mvvmdemo.ui.base.BaseFragment
 
 
-abstract class LazyLoadFragment : androidx.fragment.app.Fragment() {
+abstract class LazyLoadFragment : BaseFragment() {
     private var isViewCreated: Boolean = false // 界面是否已创建完成
     private var isVisibleToUser: Boolean = false // 是否对用户可见
     protected var isCanLoadData: Boolean = false //可以加载数据
@@ -22,14 +23,7 @@ abstract class LazyLoadFragment : androidx.fragment.app.Fragment() {
         tryLoadData()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return initView(inflater, container)
-    }
-
-    abstract fun initView(inflater: LayoutInflater, container: ViewGroup?): View?
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun initData(){
         isViewCreated = true;
         tryLoadData();
     }

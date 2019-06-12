@@ -19,13 +19,17 @@ import com.ruanchao.mvvmdemo.adapter.HomeBlogAdapter
 import com.ruanchao.mvvmdemo.bean.HomeData
 import com.ruanchao.mvpframe.utils.StatusBarUtil
 import com.ruanchao.mvvmdemo.R
+import com.ruanchao.mvvmdemo.bean.ErrorInfo
 import com.ruanchao.mvvmdemo.databinding.HomeBlogFragmentBinding
+import com.ruanchao.mvvmdemo.ui.base.BaseFragment
 import com.ruanchao.mvvmdemo.utils.obtainViewModel
+import com.ruanchao.mvvmdemo.view.MultiStateView.VIEW_STATE_CONTENT
+import com.ruanchao.mvvmdemo.view.MultiStateView.VIEW_STATE_ERROR
+import kotlinx.android.synthetic.main.home_blog_fragment.*
 import kotlinx.android.synthetic.main.home_blog_fragment.view.*
-import kotlinx.android.synthetic.main.home_fragment_layout.*
 
 
-class HomeBlogFragment: Fragment() {
+class HomeBlogFragment: BaseFragment() {
 
     private lateinit var dataBindingView: HomeBlogFragmentBinding
 
@@ -35,24 +39,13 @@ class HomeBlogFragment: Fragment() {
 
     var mCurrentPage: Int = 0
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        dataBindingView = HomeBlogFragmentBinding.inflate(inflater, container, false).apply {
-            viewModel = (activity as AppCompatActivity).obtainViewModel(HomeBlogViewModel::class.java)
-            //必须要绑定生命周期，不写没效果,这样就可以增加监听器 监听数据的变化
-            lifecycleOwner = this@HomeBlogFragment
-        }
-        initView(dataBindingView.root)
-        return dataBindingView.root
+    override fun reload() {
+        dataBindingView.viewModel?.getHomeData(mCurrentPage)
     }
 
-    private fun initView(root: View) {
-    }
+    fun getHomeDataList() = homeDataList
 
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun initData() {
         initStatuBar()
         setupRecyclerAdapter()
         initObserver()
@@ -62,7 +55,15 @@ class HomeBlogFragment: Fragment() {
         }
         srf_home_refresh.isRefreshing = true
         dataBindingView.viewModel?.getHomeData(mCurrentPage)
+    }
 
+    override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        dataBindingView = HomeBlogFragmentBinding.inflate(inflater, container, false).apply {
+            viewModel = (activity as AppCompatActivity).obtainViewModel(HomeBlogViewModel::class.java)
+            //必须要绑定生命周期，不写没效果,这样就可以增加监听器 监听数据的变化
+            lifecycleOwner = this@HomeBlogFragment
+        }
+        return dataBindingView.root
     }
 
     private fun initStatuBar() {
@@ -81,6 +82,7 @@ class HomeBlogFragment: Fragment() {
             Log.i("HomeBlogViewModel", "homeDataList:${it.size}")
             if (it != null && it.size > 0) {
                 mBlogHomeAdapter?.setHomeDataLists(it)
+                stateView.viewState = VIEW_STATE_CONTENT
             }
         })
 
@@ -97,8 +99,12 @@ class HomeBlogFragment: Fragment() {
 
         //用于观察ViewModel中的错误信息
         dataBindingView.viewModel?.errorInfo?.observe(dataBindingView.lifecycleOwner!!, Observer {
-            if (!it.isNullOrEmpty()){
-                Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
+            if (it!=null){
+                Toast.makeText(activity, it.errMsg, Toast.LENGTH_LONG).show()
+                if (it.errType == ErrorInfo.ERROR_TYPE_LOAD
+                    && mBlogHomeAdapter?.getHomeDataList()?.size ?: 0 == 0){
+                    stateView.viewState = VIEW_STATE_ERROR
+                }
             }
         })
     }

@@ -33,8 +33,10 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
     val refreshHomeDataList: MutableLiveData<MutableList<HomeData>>
         get() = _refreshHomeDataList
 
-    private val _errorInfo = MutableLiveData<String>()
-    val errorInfo: MutableLiveData<String>
+    private val _errorInfo = MutableLiveData<ErrorInfo>().apply {
+        value = null
+    }
+    val errorInfo: MutableLiveData<ErrorInfo>
         get() = _errorInfo
 
     private val _isRefreshing = MutableLiveData<Boolean>().apply { value = false }
@@ -99,7 +101,7 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
 
                     override fun onError(e: Throwable) {
                         Log.i(_TAG, "onError:" + e.localizedMessage)
-                        errorInfo.set(e.message)
+                        errorInfo.set(ErrorInfo(ErrorInfo.ERROR_TYPE_LOAD, e.message))
                     }
 
                     override fun onComplete() {
@@ -130,7 +132,7 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
                 }
 
                 override fun onError(e: Throwable) {
-                    errorInfo.set(e.message)
+                   errorInfo.set(ErrorInfo(ErrorInfo.ERROR_TYPE_REFRESH, e.message))
                     _isRefreshing.set(false)
                 }
 
