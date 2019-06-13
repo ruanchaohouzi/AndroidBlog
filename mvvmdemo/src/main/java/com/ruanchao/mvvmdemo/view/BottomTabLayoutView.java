@@ -2,6 +2,8 @@ package com.ruanchao.mvvmdemo.view;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Parcelable;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -215,5 +217,16 @@ public class BottomTabLayoutView extends LinearLayout implements View.OnClickLis
 
             return mFragmentList.size();
         }
+    }
+
+    @Nullable
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        return super.onSaveInstanceState();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(state);
     }
 }

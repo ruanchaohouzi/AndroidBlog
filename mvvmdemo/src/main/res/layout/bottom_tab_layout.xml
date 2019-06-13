@@ -74,7 +74,7 @@
             <TextView
                 android:id="@+id/tv_menu_discover"
                 style="@style/bottomTextStyle"
-                android:text="发现" />
+                android:text="体系" />
         </LinearLayout>
 
         <LinearLayout

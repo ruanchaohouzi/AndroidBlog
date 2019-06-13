@@ -8,6 +8,8 @@ import com.ruanchao.mvvmdemo.db.BlogContentDatabase
 import com.ruanchao.mvvmdemo.ui.home.HomeBlogRepo
 import com.ruanchao.mvvmdemo.db.UserDatabase
 import com.ruanchao.mvvmdemo.ui.home.HomeBlogViewModel
+import com.ruanchao.mvvmdemo.ui.knowledge.KnowledgeRepo
+import com.ruanchao.mvvmdemo.ui.knowledge.KnowledgeViewModel
 import com.ruanchao.mvvmdemo.ui.publicnumber.PublicNumberRepo
 import com.ruanchao.mvvmdemo.ui.publicnumber.PublicNumberViewModel
 import com.ruanchao.mvvmdemo.ui.login.LoginRepo
@@ -38,6 +40,10 @@ class ViewModelFactory private constructor() : ViewModelProvider.Factory{
             modelClass.isAssignableFrom(PublicNumberViewModel::class.java) ->{
                 val repo = PublicNumberRepo(NetWorkManager.getInstance().getWanAndroidApi())
                 return PublicNumberViewModel(repo) as T
+            }
+            modelClass.isAssignableFrom(KnowledgeViewModel::class.java) ->{
+                val repo = KnowledgeRepo(NetWorkManager.getInstance().getWanAndroidApi())
+                return KnowledgeViewModel(repo) as T
             }
 
             else ->{

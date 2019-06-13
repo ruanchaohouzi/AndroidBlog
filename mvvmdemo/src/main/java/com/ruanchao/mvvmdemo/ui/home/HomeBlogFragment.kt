@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.Toast
 import com.ruanchao.mvvmdemo.adapter.HomeBlogAdapter
 import com.ruanchao.mvvmdemo.bean.HomeData
@@ -23,6 +25,7 @@ import com.ruanchao.mvvmdemo.bean.ErrorInfo
 import com.ruanchao.mvvmdemo.databinding.HomeBlogFragmentBinding
 import com.ruanchao.mvvmdemo.ui.base.BaseFragment
 import com.ruanchao.mvvmdemo.utils.obtainViewModel
+import com.ruanchao.mvvmdemo.utils.setVisible
 import com.ruanchao.mvvmdemo.view.MultiStateView.VIEW_STATE_CONTENT
 import com.ruanchao.mvvmdemo.view.MultiStateView.VIEW_STATE_ERROR
 import kotlinx.android.synthetic.main.home_blog_fragment.*
@@ -38,6 +41,10 @@ class HomeBlogFragment: BaseFragment() {
     private var mBlogHomeAdapter: HomeBlogAdapter? = null
 
     var mCurrentPage: Int = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun reload() {
         dataBindingView.viewModel?.getHomeData(mCurrentPage)
@@ -158,7 +165,7 @@ class HomeBlogFragment: BaseFragment() {
             val firstPosition = linearLayoutManager.findFirstVisibleItemPosition()
             if (firstPosition == 0) {
                 mHomeToolbar.setBackgroundColor(ContextCompat.getColor(activity as Context, R.color.color_translucent))
-                mHomeSearchIcon.setImageResource(R.mipmap.home_ic_action_search_white)
+                mHomeSearchIcon.visibility = View.GONE
                 mHomeTitle.text = ""
             } else {
                 if (mBlogHomeAdapter!!.getHomeDataList().size > 1) {
@@ -168,11 +175,12 @@ class HomeBlogFragment: BaseFragment() {
                             R.color.public_number_tab_bg
                         )
                     )
-                    mHomeSearchIcon.setImageResource(R.mipmap.home_ic_action_search_black)
+                    mHomeSearchIcon.visibility = View.VISIBLE
                     mHomeTitle.text = "首页"
                 }
             }
         }
+
     }
 
 }
