@@ -1,5 +1,6 @@
 package com.ruanchao.mvvmdemo.utils
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.databinding.BindingAdapter
 import android.view.View
@@ -52,6 +53,10 @@ fun <T> MutableLiveData<T>.set(t: T?): MutableLiveData<T>{
 }
 
 fun <T> MutableLiveData<T>.get() = this.value
+
+fun Context.toast(msg: String, duration: Int = Toast.LENGTH_LONG){
+    Toast.makeText(this, msg, duration).show()
+}
 
 
 

@@ -106,4 +106,7 @@ dependencies {
     /* FlexboxLayout  */
     implementation 'com.google.android:flexbox:1.1.0'
 
+    /* anko */
+    implementation "org.jetbrains.anko:anko-common:$anko_version"
+
 }

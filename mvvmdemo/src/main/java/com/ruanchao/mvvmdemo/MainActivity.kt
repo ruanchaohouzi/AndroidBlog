@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import android.widget.CheckBox
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.ruanchao.mvvmdemo.databinding.ActivityMainBinding
 import com.ruanchao.mvvmdemo.ui.home.HomeBlogFragment
 import com.ruanchao.mvvmdemo.ui.knowledge.KnowledgeFragment
 import com.ruanchao.mvvmdemo.ui.publicnumber.PublicNumberFragment
@@ -27,7 +29,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+
+        DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         supportActionBar?.hide()
 
         mBottomTabLayoutView = findViewById<BottomTabLayoutView>(R.id.home_tab_layout)

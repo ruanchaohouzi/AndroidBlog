@@ -10,9 +10,12 @@ import android.widget.LinearLayout
 import com.just.agentweb.AgentWeb
 import com.ruanchao.mvpframe.utils.StatusBarUtil
 import com.ruanchao.mvvmdemo.R
+import com.ruanchao.mvvmdemo.utils.toast
 import kotlinx.android.synthetic.main.activity_blog_detail.*
 import kotlinx.android.synthetic.main.home_fragment_layout.*
 import kotlinx.android.synthetic.main.public_number_fragment_layout.*
+import org.jetbrains.anko.custom.async
+import org.jetbrains.anko.longToast
 
 class BlogDetailActivity : AppCompatActivity() {
 
@@ -42,5 +45,6 @@ class BlogDetailActivity : AppCompatActivity() {
             .createAgentWeb()
             .ready()
             .go(url)
+
     }
 }
