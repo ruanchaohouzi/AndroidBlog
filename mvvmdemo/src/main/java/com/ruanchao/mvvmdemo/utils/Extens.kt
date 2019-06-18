@@ -4,9 +4,12 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.databinding.BindingAdapter
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.ruanchao.mvvmdemo.view.LoadingDialog
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -56,6 +59,11 @@ fun <T> MutableLiveData<T>.get() = this.value
 
 fun Context.toast(msg: String, duration: Int = Toast.LENGTH_LONG){
     Toast.makeText(this, msg, duration).show()
+}
+
+fun getDisplayWidth(context: Context): Int {
+    var wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    return wm.getDefaultDisplay().getWidth()
 }
 
 

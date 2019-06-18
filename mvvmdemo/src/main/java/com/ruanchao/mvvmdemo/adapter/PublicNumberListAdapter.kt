@@ -9,7 +9,8 @@ import android.widget.TextView
 import com.ruanchao.mvvmdemo.R
 import com.ruanchao.mvvmdemo.bean.DataInfo
 
-class PublicNumberListAdapter(var context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PublicNumberListAdapter(var context: Context,
+                              var listener:((dataInfo: DataInfo) ->Unit)?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var datas: MutableList<DataInfo> = mutableListOf()
 
@@ -38,16 +39,7 @@ class PublicNumberListAdapter(var context: Context) : RecyclerView.Adapter<Recyc
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         viewHolder as ItemViewHolder
-
-        viewHolder.apply {
-            tv_Author?.text = datas[position].author
-            tv_niceDate?.text = datas[position].niceDate
-            tv_title?.text = datas[position].title
-            tv_chapterName?.text = datas[position].chapterName
-            itemView.setOnClickListener{
-                mOnItemClickListener?.invoke(datas[position])
-            }
-        }
+        viewHolder.bindItemView(datas[position], listener)
     }
 
     class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -62,12 +54,19 @@ class PublicNumberListAdapter(var context: Context) : RecyclerView.Adapter<Recyc
             tv_title = itemView.findViewById(R.id.tv_title)
             tv_chapterName = itemView.findViewById(R.id.tv_chapterName)
         }
-    }
 
-    var mOnItemClickListener: ((dataInfo: DataInfo) ->Unit)? = null
-
-    fun setOnItemClickListener(listener:(dataInfo: DataInfo) ->Unit){
-        mOnItemClickListener = listener
+        //直接在ViewHolder里面绑定数据
+        fun bindItemView(dataInfo: DataInfo, listener: ((dataInfo: DataInfo) ->Unit)?){
+            with(dataInfo){
+                tv_Author?.text = author
+                tv_niceDate?.text = niceDate
+                tv_title?.text = title
+                tv_chapterName?.text = chapterName
+                itemView.setOnClickListener{
+                    listener?.invoke(dataInfo)
+                }
+            }
+        }
     }
 
 }

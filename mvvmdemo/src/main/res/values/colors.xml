@@ -17,4 +17,6 @@
 
     <!--  -->
     <color name="public_number_tab_bg">#2b99f2</color>
+
+    <color name="transparent">#00ffffff</color>
 </resources>

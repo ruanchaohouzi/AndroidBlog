@@ -59,10 +59,8 @@ class PublicArticalListFragment: BaseFragment() {
     override fun initData() {
         mCurrentId = getArguments()?.getInt("id")
         Log.i(_TAG, "mCurrentId:$mCurrentId")
-        val listAdapter = PublicNumberListAdapter(activity as Context).apply {
-            setOnItemClickListener {
-                BlogDetailActivity.start(activity as Context, it.link)
-            }
+        val listAdapter = PublicNumberListAdapter(activity as Context){
+            BlogDetailActivity.start(activity as Context, it.link)
         }
         srf_artical_refresh?.setOnRefreshListener {
             mCurrentPage = 1

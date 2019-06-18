@@ -8,12 +8,14 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.ruanchao.mvvmdemo.R
+import com.ruanchao.mvvmdemo.view.LoadingDialog
 import com.ruanchao.mvvmdemo.view.MultiStateView
 import kotlinx.android.synthetic.main.public_number_fragment_layout.*
 
 abstract class BaseFragment: Fragment() {
 
     private lateinit var rootView: View
+    var loadingDialog: LoadingDialog? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = initView(inflater, container, savedInstanceState)
@@ -31,6 +33,16 @@ abstract class BaseFragment: Fragment() {
             reload()
         }
         initData()
+    }
+
+    fun showLoadingDialog(){
+        loadingDialog = LoadingDialog()
+        loadingDialog?.show(fragmentManager!!,"loading")
+
+    }
+
+    fun closeLoadingDialog(){
+        loadingDialog?.dismiss()
     }
 
     abstract fun reload()

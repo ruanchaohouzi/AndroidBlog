@@ -43,4 +43,9 @@
         <item name="msv_viewState">loading</item>
     </style>
 
+    <style name="LoginEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#78000000</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
 </resources>

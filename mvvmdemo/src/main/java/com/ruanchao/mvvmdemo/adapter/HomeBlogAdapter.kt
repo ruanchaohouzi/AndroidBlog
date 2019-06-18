@@ -19,16 +19,8 @@ import com.ruanchao.mvvmdemo.ui.home.BlogDetailActivity
 import com.ruanchao.mvvmdemo.ui.home.HomeBlogViewModel
 
 
-class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,
-                                  viewModel: HomeBlogViewModel?): androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
-
-    private var mHomeDataList: MutableList<HomeData> = mutableListOf()
-    var mContext: Context? = null
-
-    init {
-        mHomeDataList = data
-        mContext = context
-    }
+class HomeBlogAdapter constructor(var mHomeDataList: MutableList<HomeData>, val mContext: Context,
+                                  viewModel: HomeBlogViewModel?): RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     fun addHomeDataList(data: MutableList<HomeData>){
         mHomeDataList.addAll(data)
@@ -59,13 +51,12 @@ class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,
 
         if (viewHolder is ProjectViewHolder) {
             val projectInfo: ProjectInfo = mHomeDataList[position].itemValue as ProjectInfo
-            viewHolder.bind(projectInfo)
-
-            viewHolder.dataBinding.root.setOnClickListener{
+            viewHolder.bind(projectInfo){
                 listener?.invoke(projectInfo)
             }
         }else if (viewHolder is BannerViewHolder){
-            bindBannerViewHolder(position, viewHolder)
+            val banners: List<BannerInfo> = mHomeDataList[position].itemValue as List<BannerInfo>
+            viewHolder.bind(mContext, banners)
         }
     }
 
@@ -77,11 +68,8 @@ class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,
                 return BannerViewHolder(view)
             }
             HomeData.VIEW_TYPE_CONTENT ->{
-
                 val itemBinding = HomeRecyclerItemLayoutBinding.inflate(
-                    LayoutInflater.from(mContext),
-                    container, false)
-                itemBinding.projectInfo
+                    LayoutInflater.from(mContext), container, false)
                 return ProjectViewHolder(itemBinding)
             }
             HomeData.VIEW_TYPE_FOOT -> {
@@ -92,38 +80,6 @@ class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,
                throw IllegalArgumentException()
             }
         }
-    }
-
-    private fun bindBannerViewHolder(position: Int, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
-        val banners: List<BannerInfo> = mHomeDataList[position].itemValue as List<BannerInfo>
-        val bannerViewHolder: BannerViewHolder = viewHolder as BannerViewHolder
-        val mHomeSlider = bannerViewHolder.mHomeSlider
-        for (name in banners) {
-            val textSliderView = TextSliderView(mContext)
-            // initialize a SliderLayout
-            textSliderView
-                .description(name.title)
-                .image(name.imagePath)
-                .setScaleType(BaseSliderView.ScaleType.Fit)
-                .setOnSliderClickListener{
-                    BlogDetailActivity.start(mContext!!,name.url)
-                }
-            mHomeSlider.addSlider(textSliderView)
-        }
-        mHomeSlider.setPresetTransformer(SliderLayout.Transformer.Default)
-        mHomeSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom)
-//        mHomeSlider.setCustomAnimation(Default())
-        mHomeSlider.setDuration(4000)
-        mHomeSlider.addOnPageChangeListener(object : ViewPagerEx.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-            }
-
-            override fun onPageSelected(position: Int) {
-            }
-        })
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -137,9 +93,13 @@ class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,
     }
 
     class ProjectViewHolder(var dataBinding: HomeRecyclerItemLayoutBinding)
-        : androidx.recyclerview.widget.RecyclerView.ViewHolder(dataBinding.root) {
-        fun bind(projectInfo: ProjectInfo) {
+        : RecyclerView.ViewHolder(dataBinding.root) {
+        fun bind(projectInfo: ProjectInfo, listener: ((ProjectInfo) -> Unit)?) {
+            //进行数据绑定
             dataBinding.projectInfo = projectInfo
+            dataBinding.root.setOnClickListener{
+                listener?.invoke(projectInfo)
+            }
         }
     }
 
@@ -149,8 +109,40 @@ class HomeBlogAdapter constructor(data: MutableList<HomeData>, context: Context,
 
     }
 
-    class BannerViewHolder(view: View): androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
+    class BannerViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val mHomeSlider: SliderLayout = view.findViewById(R.id.home_slider)
+
+        fun bind(context: Context, banners: List<BannerInfo>) {
+            with(banners) {
+                this.forEach { name ->
+                    val textSliderView = TextSliderView(context)
+                    // initialize a SliderLayout
+                    textSliderView
+                        .description(name.title)
+                        .image(name.imagePath)
+                        .setScaleType(BaseSliderView.ScaleType.Fit)
+                        .setOnSliderClickListener {
+                            BlogDetailActivity.start(context, name.url)
+                        }
+                    mHomeSlider.addSlider(textSliderView)
+                }
+            }
+
+            mHomeSlider.setPresetTransformer(SliderLayout.Transformer.Default)
+            mHomeSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom)
+            //mHomeSlider.setCustomAnimation(Default())
+            mHomeSlider.setDuration(4000)
+            mHomeSlider.addOnPageChangeListener(object : ViewPagerEx.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) {
+                }
+
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                }
+
+                override fun onPageSelected(position: Int) {
+                }
+            })
+        }
     }
 
     private var listener: ((ProjectInfo) -> Unit)? = null

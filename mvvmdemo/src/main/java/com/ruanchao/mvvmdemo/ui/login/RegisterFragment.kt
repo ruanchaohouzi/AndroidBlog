@@ -1,45 +1,43 @@
 package com.ruanchao.mvvmdemo.ui.login
 
 import androidx.lifecycle.Observer
+import android.content.Context
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.ruanchao.mvvmdemo.R
-import com.ruanchao.mvvmdemo.databinding.LoginFragmentLayoutBinding
+import com.ruanchao.mvvmdemo.bean.UserInfo1
+import com.ruanchao.mvvmdemo.databinding.RegisterFragmentLayoutBinding
 import com.ruanchao.mvvmdemo.event.UserMsg
 import com.ruanchao.mvvmdemo.ui.base.BaseFragment
 import com.ruanchao.mvvmdemo.utils.obtainViewModel
 import com.ruanchao.mvvmdemo.utils.toast
-import com.ruanchao.mvvmdemo.view.LoadingDialog
-import kotlinx.android.synthetic.main.login_fragment_layout.*
+import kotlinx.android.synthetic.main.register_fragment_layout.*
 import org.greenrobot.eventbus.EventBus
 
-class LoginFragment: BaseFragment() {
+class RegisterFragment: BaseFragment() {
 
-    lateinit var viewBinding: LoginFragmentLayoutBinding
+    lateinit var viewBinding: RegisterFragmentLayoutBinding
 
     override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-
-        viewBinding = LoginFragmentLayoutBinding.inflate(inflater, container, false)
+        viewBinding = RegisterFragmentLayoutBinding.inflate(inflater, container, false)
             .apply {
                 viewModel = (activity as AppCompatActivity).obtainViewModel(LoginViewModel::class.java)
-                lifecycleOwner = this@LoginFragment
+                lifecycleOwner = this@RegisterFragment
             }
         return viewBinding.root
     }
 
-    override fun reload() {
-    }
-
     override fun initData() {
-        tv_register.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_register)
+        tv_Login.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_login)
         }
-        viewBinding.viewModel?.loginError?.observe(this, Observer {
+        viewBinding.viewModel?.registerError?.observe(this, Observer {
             it?.let {
                 activity!!.toast(it)
             }
@@ -48,7 +46,7 @@ class LoginFragment: BaseFragment() {
 
         viewBinding.viewModel?.userInfoData?.observe(this, Observer {
             it?.let {
-                activity!!.toast("登录成功")
+                activity!!.toast("注册成功")
                 EventBus.getDefault().post(UserMsg(it))
                 activity!!.finish()
             }
@@ -62,6 +60,9 @@ class LoginFragment: BaseFragment() {
                 closeLoadingDialog()
             }
         })
+    }
+
+    override fun reload() {
     }
 
 }

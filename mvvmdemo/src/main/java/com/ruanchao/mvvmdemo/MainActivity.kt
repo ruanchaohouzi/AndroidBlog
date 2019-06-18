@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.ruanchao.mvvmdemo.databinding.ActivityMainBinding
 import com.ruanchao.mvvmdemo.ui.home.HomeBlogFragment
 import com.ruanchao.mvvmdemo.ui.knowledge.KnowledgeFragment
+import com.ruanchao.mvvmdemo.ui.login.UserFragment
 import com.ruanchao.mvvmdemo.ui.publicnumber.PublicNumberFragment
 import com.ruanchao.mvvmdemo.ui.test.TestFragment
 import com.ruanchao.mvvmdemo.utils.schedule
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         fragments.add(TestFragment())
 
-        fragments.add(TestFragment())
+        fragments.add(UserFragment())
 
         mBottomTabLayoutView!!.initView(supportFragmentManager, fragments)
     }
@@ -59,4 +60,5 @@ class MainActivity : AppCompatActivity() {
         Log.i("MainActivity", "test:$value")
         super.onRestoreInstanceState(savedInstanceState)
     }
+
 }

@@ -4,66 +4,109 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.text.TextUtils
 import android.util.Log
+import androidx.databinding.ObservableField
+import androidx.fragment.app.Fragment
+import com.ruanchao.mvvmdemo.bean.BaseNetBean
+import com.ruanchao.mvvmdemo.bean.User
 import com.ruanchao.mvvmdemo.bean.UserInfo1
 import com.ruanchao.mvvmdemo.utils.schedule
 import com.ruanchao.mvvmdemo.utils.set
+import com.ruanchao.mvvmdemo.view.LoadingDialog
 import io.reactivex.*
 import io.reactivex.disposables.Disposable
+import java.util.concurrent.TimeUnit
 
 
 class LoginViewModel(private val repo: LoginRepo): ViewModel() {
 
-    var userName: MutableLiveData<String> = MutableLiveData()
-    var pwd: MutableLiveData<String> = MutableLiveData()
-    var userInfoData: MutableLiveData<UserInfo1> = MutableLiveData()
-    var error: MutableLiveData<String> = MutableLiveData()
+    var userName = MutableLiveData<String>().apply {
+        value = null
+    }
+    var pwd = MutableLiveData<String>().apply {
+        value = null
+    }
+    var rePwd = MutableLiveData<String>().apply {
+        value = null
+    }
+    var userInfoData = MutableLiveData<User>().apply {
+        value = null
+    }
 
-    fun loginOrRegist(){
+    var registerError = MutableLiveData<String>().apply{
+            value = null
+        }
+    var loginError = MutableLiveData<String>().apply {
+        value = null
+    }
+    var isLoading = MutableLiveData<Boolean>().apply {
+        value = false
+    }
+
+    val TAG = LoginViewModel::class.java.simpleName
+
+
+    fun login(){
         if (TextUtils.isEmpty(userName.value) || TextUtils.isEmpty(pwd.value)){
-            error.set("用户名或者密码不能为空")
+            loginError.set("用户名或者密码不能为空")
             return
         }
-        val userInfo = UserInfo1(userName.value!!, pwd.value!!);
-        Observable.create(ObservableOnSubscribe<UserInfo1?> {
-            var newUserInfo = repo.login(userInfo)
-            if (newUserInfo == null) {
-                //进入FlatMap中进行处理
-                it.onNext(userInfo)
-            } else {
-                it.onNext(newUserInfo)
-            }
-        }).flatMap { t ->
-            //先注册
-            if (t.userId == 0) {
-                Log.i("LoginViewModel", " not logined")
-                repo.regist(t!!)
-                Log.i("LoginViewModel", " regist")
-                //在登录
-                Observable.create(ObservableOnSubscribe<UserInfo1> {
-                    var user: UserInfo1? = repo.login(t)
-                    //进入Observer中进行处理
-                    it.onNext(user!!)
-                }).schedule()
-            }else {
-                Log.i("LoginViewModel", "logined")
-                Observable.just(t)
-            }
-        }.schedule()
-            .subscribe(object : Observer<UserInfo1?> {
+        repo.login(userName.value!!, pwd.value!!)
+            .schedule()
+            .subscribe(object : Observer<BaseNetBean<User>>{
                 override fun onComplete() {
+                    isLoading.set(false)
+
                 }
 
                 override fun onSubscribe(d: Disposable) {
+                    isLoading.set(true)
                 }
 
-                override fun onNext(t: UserInfo1) {
-                    userInfoData.set(t)
-                    Log.i("LoginViewModel", "onNext:${t.userId}")
+                override fun onNext(t: BaseNetBean<User>) {
+                    if (t.errorCode == 0){
+                        userInfoData.set(t.data)
+                    }else{
+                        loginError.set(t.errorMsg)
+                    }
                 }
 
                 override fun onError(e: Throwable) {
-                    error.set(e.message)
-                    Log.i("LoginViewModel", "onError:${e.message}")
+                    loginError.set(e.message)
+                }
+
+            })
+    }
+
+    fun register(){
+        Log.i(TAG, "userName:${userName.value} pwd:${pwd.value} repwd:${rePwd.value}")
+        if (TextUtils.isEmpty(userName.value)
+            || TextUtils.isEmpty(pwd.value)){
+            registerError.set("用户名或者密码不能为空")
+            return
+        }else if (pwd.value != rePwd.value){
+            registerError.set("两次密码不一致")
+        }
+        repo.register(userName.value!!, pwd.value!!, rePwd.value!!)
+            .schedule()
+            .subscribe(object : Observer<BaseNetBean<User>>{
+                override fun onComplete() {
+                    isLoading.set(false)
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    isLoading.set(true)
+                }
+
+                override fun onNext(t: BaseNetBean<User>) {
+                    if (t.errorCode == 0){
+                        userInfoData.set(t.data)
+                    }else{
+                        registerError.set(t.errorMsg)
+                    }
+                }
+
+                override fun onError(e: Throwable) {
+                    registerError.set(e.message)
                 }
 
             })

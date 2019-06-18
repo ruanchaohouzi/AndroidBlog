@@ -109,4 +109,6 @@ dependencies {
     /* anko */
     implementation "org.jetbrains.anko:anko-common:$anko_version"
 
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
 }
