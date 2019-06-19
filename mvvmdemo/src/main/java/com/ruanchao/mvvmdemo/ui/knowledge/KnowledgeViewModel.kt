@@ -5,12 +5,13 @@ import androidx.lifecycle.ViewModel
 import com.ruanchao.mvvmdemo.bean.BaseNetBean
 import com.ruanchao.mvvmdemo.bean.KnowledgeInfo
 import com.ruanchao.mvvmdemo.bean.PublicNumerArticalInfo
+import com.ruanchao.mvvmdemo.ui.login.BaseViewModel
 import com.ruanchao.mvvmdemo.utils.schedule
 import com.ruanchao.mvvmdemo.utils.set
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
-class KnowledgeViewModel(val remote: KnowledgeRepo): ViewModel() {
+class KnowledgeViewModel(val remote: KnowledgeRepo): BaseViewModel(remote) {
 
     var isKnowledgeChildDataListLoading = false
 

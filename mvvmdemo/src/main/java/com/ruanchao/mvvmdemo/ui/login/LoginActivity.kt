@@ -1,17 +1,26 @@
 package com.ruanchao.mvvmdemo.ui.login
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
 import com.ruanchao.mvvmdemo.R
 
 class LoginActivity : AppCompatActivity() {
 
     companion object {
+
+        val REQUEST_CODE = 1000
+
         fun start(context: Context){
             context.startActivity(Intent(context, LoginActivity::class.java))
+        }
+
+        fun startActivityForResult(context: Activity, requestCode: Int){
+            context.startActivityForResult(Intent(context, LoginActivity::class.java), requestCode)
         }
     }
 

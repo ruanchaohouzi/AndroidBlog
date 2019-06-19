@@ -43,9 +43,14 @@
               android:textSize="13sp"
     />
 
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
-               android:src="@mipmap/artical_collection"
+    <ImageView
+            android:id="@+id/iv_collect"
+            android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@mipmap/artical_discollected"
                android:layout_alignParentRight="true"
+               android:paddingLeft="10dp"
+               android:paddingRight="10dp"
                android:layout_below="@id/tv_title"
     />
 

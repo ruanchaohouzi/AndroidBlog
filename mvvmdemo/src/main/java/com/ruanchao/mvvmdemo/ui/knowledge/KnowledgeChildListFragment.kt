@@ -17,7 +17,7 @@ import com.ruanchao.mvvmdemo.ui.base.BaseFragment
 import com.ruanchao.mvvmdemo.ui.home.BlogDetailActivity
 import com.ruanchao.mvvmdemo.utils.obtainViewModel
 import com.ruanchao.mvvmdemo.view.MultiStateView
-import kotlinx.android.synthetic.main.public_number_artical_list_fragment_layout.*
+import kotlinx.android.synthetic.main.knowledge_child_list_fragment_layout.*
 
 
 class KnowledgeChildListFragment: BaseFragment() {
@@ -28,10 +28,11 @@ class KnowledgeChildListFragment: BaseFragment() {
     private val _TAG = KnowledgeChildListFragment::class.java.simpleName
 
     companion object {
-        fun newInstance(id: Int): KnowledgeChildListFragment {
+        fun newInstance(id: Int, name: String): KnowledgeChildListFragment {
             var f = KnowledgeChildListFragment()
             var bundle = Bundle()
             bundle.putInt("id", id)
+            bundle.putString("name", name)
             f.arguments = bundle
             return f
         }
@@ -49,9 +50,10 @@ class KnowledgeChildListFragment: BaseFragment() {
     }
 
     override fun initData() {
+        mHomeTitle.text = getArguments()?.getString("name")
         mCurrentId = getArguments()?.getInt("id")
         Log.i(_TAG, "mCurrentId:$mCurrentId")
-        val listAdapter = PublicNumberListAdapter(activity as Context){
+        val listAdapter = PublicNumberListAdapter(activity as Context, viewModel){
             BlogDetailActivity.start(activity as Context, it.link)
         }
         srf_artical_refresh?.setOnRefreshListener {
@@ -106,6 +108,13 @@ class KnowledgeChildListFragment: BaseFragment() {
                 Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
             }
         })
+
+        viewModel?.collectErrInfo?.observe(this, Observer {
+            it?.let {
+                Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
+            }
+        })
+
         loadData()
     }
 

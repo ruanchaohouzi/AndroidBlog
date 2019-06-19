@@ -1,7 +1,5 @@
 package com.ruanchao.mvvmdemo.net
 
-import com.ruanchao.mvvmdemo.utils.Constants
-import com.ruanchao.mvvmdemo.utils.NetworkUtil
 import com.ruanchao.mvvmdemo.MainApplication
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,6 +7,14 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
+import android.content.Context.MODE_PRIVATE
+import android.R.id.edit
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.Context.MODE_PRIVATE
+import android.util.Log
+import com.ruanchao.mvvmdemo.utils.*
+
 
 class NetWorkManager private constructor(){
 
@@ -16,6 +22,7 @@ class NetWorkManager private constructor(){
     private var mTucaoRetrofit: Retrofit? = null
     private var mGithubRetrofit: Retrofit? = null
     private val CACHE_MAX_SIZE: Long = 1024*1024*20
+    private val TAG = NetWorkManager::class.java.simpleName
 
     companion object {
         private var mNetWorkManager: NetWorkManager? = null
@@ -40,6 +47,8 @@ class NetWorkManager private constructor(){
                 //必须添加Network网络拦截器和cache配合使用
 //            .addNetworkInterceptor(getCacheInterceptor())
 //            .cache(Cache(cacheFile, CACHE_MAX_SIZE))
+            .addInterceptor(addCookiesInterceptor())
+            .addInterceptor(getCookiesInterceptor())
             .build()
 
         mWanAndroidRetrofit = buildRetrofit(okHttpClient, Constants.BASE_WAN_ANDROID_URL)
@@ -81,6 +90,47 @@ class NetWorkManager private constructor(){
             responseBuild
 
         }
+    }
+
+    /**
+     * 获取服务端返回的登录cookie信息
+     */
+    private fun getCookiesInterceptor() : Interceptor = Interceptor {
+
+        val request = it.request()
+        val originalResponse = it.proceed(request)
+        val encodedPath = request.url().encodedPath()
+        if ((encodedPath.contains("user/register")
+            || encodedPath.contains("user/login"))
+            && !originalResponse.headers("Set-Cookie").isEmpty()){
+            val cookies = mutableSetOf<String>()
+            for (header in originalResponse.headers("Set-Cookie")) {
+                cookies.add(header)
+                Log.i(TAG, "cookie: $header")
+            }
+            //保存cookie信息
+            PreferencesUtil.saveSetString(PreferencesUtil.COOKIE_KEY, cookies)
+        }
+
+        originalResponse
+    }
+
+    private fun addCookiesInterceptor() : Interceptor = Interceptor {
+
+        val request = it.request()
+        val builder = request.newBuilder()
+        val encodedPath = request.url().host()
+        Log.i(TAG,"encodedPath:$encodedPath")
+        if (encodedPath.contains("wanandroid.com")) {
+            PreferencesUtil.getSet(PreferencesUtil.COOKIE_KEY)?.let {
+                for (cookie in it) {
+                    builder.addHeader("Cookie", cookie)
+                    // This is done so I know which headers are being added; this interceptor is used after the normal logging of OkHttp
+                    Log.i(TAG, "Adding Header: $cookie")
+                }
+            }
+        }
+        it.proceed(builder.build())
     }
 
 }

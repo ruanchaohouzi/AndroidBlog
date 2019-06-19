@@ -1,17 +1,17 @@
 package com.ruanchao.mvvmdemo.ui.publicnumber
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import android.util.Log
 import com.ruanchao.mvvmdemo.bean.BaseNetBean
 import com.ruanchao.mvvmdemo.bean.PublicNumberInfo
 import com.ruanchao.mvvmdemo.bean.PublicNumerArticalInfo
+import com.ruanchao.mvvmdemo.ui.login.BaseViewModel
 import com.ruanchao.mvvmdemo.utils.schedule
 import com.ruanchao.mvvmdemo.utils.set
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
-class PublicNumberViewModel(val repo: PublicNumberRepo): ViewModel(){
+class PublicNumberViewModel(val repo: PublicNumberRepo): BaseViewModel(repo){
 
     var publicNumberInfos = MutableLiveData<List<PublicNumberInfo>>()
     var error = MutableLiveData<String>().apply {

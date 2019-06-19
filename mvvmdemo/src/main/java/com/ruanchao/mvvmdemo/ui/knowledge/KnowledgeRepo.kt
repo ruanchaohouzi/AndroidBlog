@@ -1,10 +1,9 @@
 package com.ruanchao.mvvmdemo.ui.knowledge
 
-import com.ruanchao.mvvmdemo.bean.BaseNetBean
 import com.ruanchao.mvvmdemo.net.WanAndroidApi
-import io.reactivex.Observable
+import com.ruanchao.mvvmdemo.ui.login.BaseRepo
 
-class KnowledgeRepo(val remote: WanAndroidApi){
+class KnowledgeRepo(val remote: WanAndroidApi): BaseRepo(remote){
 
     fun getKnowledgeList() = remote.getKnowledgeList()
 

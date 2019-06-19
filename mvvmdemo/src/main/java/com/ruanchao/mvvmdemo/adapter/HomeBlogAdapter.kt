@@ -86,12 +86,6 @@ class HomeBlogAdapter constructor(var mHomeDataList: MutableList<HomeData>, val 
         return if(position == mHomeDataList.size) HomeData.VIEW_TYPE_FOOT else mHomeDataList[position].itemType
     }
 
-    private lateinit var mOnItemClickListener: (Int, ProjectInfo) -> Unit
-
-    fun setOnItemClickListener(onItemClickListener: (Int, ProjectInfo)-> Unit){
-        mOnItemClickListener = onItemClickListener
-    }
-
     class ProjectViewHolder(var dataBinding: HomeRecyclerItemLayoutBinding)
         : RecyclerView.ViewHolder(dataBinding.root) {
         fun bind(projectInfo: ProjectInfo, listener: ((ProjectInfo) -> Unit)?) {

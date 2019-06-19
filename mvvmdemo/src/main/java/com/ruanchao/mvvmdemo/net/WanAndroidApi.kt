@@ -39,5 +39,21 @@ interface WanAndroidApi{
     fun login(@Field("username") username: String,
               @Field("password") password: String):Observable<BaseNetBean<User>>
 
+    @GET("/user/logout/json")
+    fun logout():Observable<BaseNetBean<Any>>
+
+    @GET("/lg/collect/list/{page}/json")
+    fun getCollectList(@Path("page") page: Int):Observable<BaseNetBean<CollectInfo>>
+
+    @POST("/lg/collect/{id}/json")
+    fun collectArtical(@Path("id") id: Int):Observable<BaseNetBean<Any>>
+
+    @POST("lg/uncollect_originId/{id}/json")
+    fun unCollectArtical(@Path("id") id: Int):Observable<BaseNetBean<Any>>
+
+
+
+
+
 
 }

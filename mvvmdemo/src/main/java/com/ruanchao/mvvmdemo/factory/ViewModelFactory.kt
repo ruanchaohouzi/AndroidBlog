@@ -33,7 +33,8 @@ class ViewModelFactory private constructor() : ViewModelProvider.Factory{
                 return homeBlogViewModel as T
             }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                val loginRepo = LoginRepo(NetWorkManager.getInstance().getWanAndroidApi())
+                val loginRepo = LoginRepo(NetWorkManager.getInstance().getWanAndroidApi(),
+                    UserDatabase.getInstance(MainApplication.context)?.userDao())
                 return LoginViewModel(loginRepo) as T
             }
 

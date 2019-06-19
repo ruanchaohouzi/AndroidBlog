@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.ruanchao.mvvmdemo.MainApplication
 import com.ruanchao.mvvmdemo.view.LoadingDialog
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -59,6 +60,10 @@ fun <T> MutableLiveData<T>.get() = this.value
 
 fun Context.toast(msg: String, duration: Int = Toast.LENGTH_LONG){
     Toast.makeText(this, msg, duration).show()
+}
+
+fun Fragment.toast(msg: String, duration: Int = Toast.LENGTH_LONG){
+    Toast.makeText(activity, msg, duration).show()
 }
 
 fun getDisplayWidth(context: Context): Int {

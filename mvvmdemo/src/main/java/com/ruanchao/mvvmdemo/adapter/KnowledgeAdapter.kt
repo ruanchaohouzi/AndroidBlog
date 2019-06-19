@@ -34,7 +34,7 @@ class KnowledgeAdapter: BaseQuickAdapter<KnowledgeInfo, BaseViewHolder>(R.layout
         override fun convert(helper: BaseViewHolder?, item: Children?) {
             helper?.setText(R.id.tv_name, item?.name)
             helper?.itemView?.setOnClickListener{
-                ChildKnowledgeActivity.start(mContext, item?.id)
+                ChildKnowledgeActivity.start(mContext, item?.id, item?.name)
             }
         }
 

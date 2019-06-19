@@ -6,17 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.ruanchao.mvvmdemo.R
 import com.ruanchao.mvvmdemo.databinding.LoginFragmentLayoutBinding
-import com.ruanchao.mvvmdemo.event.UserMsg
 import com.ruanchao.mvvmdemo.ui.base.BaseFragment
 import com.ruanchao.mvvmdemo.utils.obtainViewModel
 import com.ruanchao.mvvmdemo.utils.toast
-import com.ruanchao.mvvmdemo.view.LoadingDialog
 import kotlinx.android.synthetic.main.login_fragment_layout.*
-import org.greenrobot.eventbus.EventBus
 
 class LoginFragment: BaseFragment() {
 
@@ -49,7 +45,6 @@ class LoginFragment: BaseFragment() {
         viewBinding.viewModel?.userInfoData?.observe(this, Observer {
             it?.let {
                 activity!!.toast("登录成功")
-                EventBus.getDefault().post(UserMsg(it))
                 activity!!.finish()
             }
 

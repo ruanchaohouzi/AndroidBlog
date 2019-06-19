@@ -93,7 +93,7 @@
             <TextView
                 android:id="@+id/tv_menu_order"
                 style="@style/bottomTextStyle"
-                android:text="附近" />
+                android:text="收藏" />
         </LinearLayout>
 
         <LinearLayout

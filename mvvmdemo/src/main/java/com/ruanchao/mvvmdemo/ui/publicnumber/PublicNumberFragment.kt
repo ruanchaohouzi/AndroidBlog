@@ -48,6 +48,7 @@ class PublicNumberFragment: BaseFragment() {
 
         mViewBinding?.viewModel?.getPublicNumberList()
         mViewBinding?.viewModel?.publicNumberInfos?.observe(this, Observer {
+
             if(it != null) {
                 setTab(it)
                 stateView.viewState = MultiStateView.VIEW_STATE_CONTENT

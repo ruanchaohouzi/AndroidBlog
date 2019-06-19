@@ -2,10 +2,10 @@ package com.ruanchao.mvvmdemo.db
 
 import androidx.room.*
 import android.content.Context
-import com.ruanchao.mvvmdemo.bean.UserInfo1
+import com.ruanchao.mvvmdemo.bean.User
 
 
-@Database(entities = [UserInfo1::class], version = 1)
+@Database(entities = [User::class], version = 1)
 abstract class UserDatabase : RoomDatabase() {
 
     companion object {

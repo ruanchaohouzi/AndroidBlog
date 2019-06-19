@@ -10,10 +10,12 @@ class ChildKnowledgeActivity : AppCompatActivity() {
 
     companion object {
         val KEY_CID = "cid"
+        val KEY_NAME = "name"
 
-        fun start(context: Context, cid:Int?){
+        fun start(context: Context, cid:Int?, name: String?){
             var intent = Intent(context, ChildKnowledgeActivity::class.java)
             intent.putExtra(KEY_CID, cid)
+            intent.putExtra(KEY_NAME,name)
             context.startActivity(intent)
         }
 
@@ -23,7 +25,9 @@ class ChildKnowledgeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_child_knowledge)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fl_content,KnowledgeChildListFragment.newInstance(intent.getIntExtra(KEY_CID, 60)))
+            .replace(R.id.fl_content,KnowledgeChildListFragment.newInstance(
+                intent.getIntExtra(KEY_CID, 60),
+                    intent.getStringExtra(KEY_NAME)))
             .commit()
 
     }

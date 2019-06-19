@@ -4,17 +4,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.text.TextUtils
 import android.util.Log
-import androidx.databinding.ObservableField
-import androidx.fragment.app.Fragment
 import com.ruanchao.mvvmdemo.bean.BaseNetBean
 import com.ruanchao.mvvmdemo.bean.User
-import com.ruanchao.mvvmdemo.bean.UserInfo1
+import com.ruanchao.mvvmdemo.bean.UserInfo
+import com.ruanchao.mvvmdemo.event.LoginUserMsg
+import com.ruanchao.mvvmdemo.utils.PreferencesUtil
 import com.ruanchao.mvvmdemo.utils.schedule
 import com.ruanchao.mvvmdemo.utils.set
-import com.ruanchao.mvvmdemo.view.LoadingDialog
 import io.reactivex.*
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import java.util.concurrent.TimeUnit
+import io.reactivex.schedulers.Schedulers
+import org.greenrobot.eventbus.EventBus
 
 
 class LoginViewModel(private val repo: LoginRepo): ViewModel() {
@@ -42,6 +43,10 @@ class LoginViewModel(private val repo: LoginRepo): ViewModel() {
         value = false
     }
 
+    var isLogout = MutableLiveData<Boolean>().apply {
+        value = null
+    }
+
     val TAG = LoginViewModel::class.java.simpleName
 
 
@@ -51,6 +56,12 @@ class LoginViewModel(private val repo: LoginRepo): ViewModel() {
             return
         }
         repo.login(userName.value!!, pwd.value!!)
+            .flatMap {
+                if (it.errorCode == 0 && it.data != null){
+                    repo.insert(it.data!!)
+                }
+                Observable.just(it)
+            }
             .schedule()
             .subscribe(object : Observer<BaseNetBean<User>>{
                 override fun onComplete() {
@@ -64,7 +75,7 @@ class LoginViewModel(private val repo: LoginRepo): ViewModel() {
 
                 override fun onNext(t: BaseNetBean<User>) {
                     if (t.errorCode == 0){
-                        userInfoData.set(t.data)
+                        handleLoginSuccess(t.data)
                     }else{
                         loginError.set(t.errorMsg)
                     }
@@ -87,6 +98,12 @@ class LoginViewModel(private val repo: LoginRepo): ViewModel() {
             registerError.set("两次密码不一致")
         }
         repo.register(userName.value!!, pwd.value!!, rePwd.value!!)
+            .flatMap {
+                if (it.errorCode == 0 && it.data != null){
+                    repo.insert(it.data!!)
+                }
+                Observable.just(it)
+            }
             .schedule()
             .subscribe(object : Observer<BaseNetBean<User>>{
                 override fun onComplete() {
@@ -99,7 +116,7 @@ class LoginViewModel(private val repo: LoginRepo): ViewModel() {
 
                 override fun onNext(t: BaseNetBean<User>) {
                     if (t.errorCode == 0){
-                        userInfoData.set(t.data)
+                        handleLoginSuccess(t.data)
                     }else{
                         registerError.set(t.errorMsg)
                     }
@@ -110,6 +127,61 @@ class LoginViewModel(private val repo: LoginRepo): ViewModel() {
                 }
 
             })
+    }
+
+    fun logout(){
+        repo.logout()
+            .schedule()
+            .subscribe(object : Observer<BaseNetBean<Any>>{
+                override fun onComplete() {
+                    isLoading.set(false)
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    isLoading.set(true)
+                }
+
+                override fun onNext(t: BaseNetBean<Any>) {
+                    if (t.errorCode == 0){
+                        EventBus.getDefault().post(LoginUserMsg(null))
+                        UserInfo.getInstance()?.user = null
+                        PreferencesUtil.remove(PreferencesUtil.COOKIE_KEY)
+                    }else{
+                        loginError.value = t.errorMsg
+                    }
+                }
+
+                override fun onError(e: Throwable) {
+                    loginError.value = e.message
+                }
+
+            })
+    }
+
+    fun getUserInfo(){
+        repo.getUserInfo()?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe(object : SingleObserver<User>{
+                override fun onSuccess(t: User) {
+                    UserInfo.getInstance()?.user = t
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                }
+
+                override fun onError(e: Throwable) {
+                }
+
+            })
+
+    }
+
+    private fun handleLoginSuccess(user: User?){
+        userInfoData.set(user)
+        UserInfo.getInstance()?.user = user
+
+        //需要发送粘性广播???
+        EventBus.getDefault().post(LoginUserMsg(user))
     }
 
 }
