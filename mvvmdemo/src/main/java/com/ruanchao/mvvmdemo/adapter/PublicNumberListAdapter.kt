@@ -12,13 +12,14 @@ import android.widget.Toast
 import com.ruanchao.mvvmdemo.R
 import com.ruanchao.mvvmdemo.bean.DataInfo
 import com.ruanchao.mvvmdemo.bean.UserInfo
-import com.ruanchao.mvvmdemo.ui.login.BaseViewModel
+import com.ruanchao.mvvmdemo.ui.collection.CollectionViewModel
 import com.ruanchao.mvvmdemo.ui.login.LoginActivity
 
-class PublicNumberListAdapter(val context: Context, val viewModel: BaseViewModel,
+class PublicNumberListAdapter(val context: Context, val viewModel: CollectionViewModel,
                               var listener:((dataInfo: DataInfo) ->Unit)?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var datas: MutableList<DataInfo> = mutableListOf()
+    var isCollectionAdapter: Boolean = false
 
     fun resetDatas(datas: List<DataInfo>?){
         if (datas != null) {
@@ -33,6 +34,17 @@ class PublicNumberListAdapter(val context: Context, val viewModel: BaseViewModel
             notifyDataSetChanged()
         }
     }
+
+    fun addCollectedData(dataInfo: DataInfo){
+        this.datas.add(0, dataInfo)
+        notifyDataSetChanged()
+    }
+
+    fun removeUnCollectedData(dataInfo: DataInfo){
+        this.datas.remove(dataInfo)
+        notifyDataSetChanged()
+    }
+
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
 
@@ -70,7 +82,11 @@ class PublicNumberListAdapter(val context: Context, val viewModel: BaseViewModel
                 tv_niceDate?.text = niceDate
                 tv_title?.text = title
                 tv_chapterName?.text = chapterName
+                if (isCollectionAdapter){
+                    dataInfo.collect = true
+                }
                 var resourceId = if (dataInfo.collect) R.mipmap.artical_collected else R.mipmap.artical_discollected
+
                 iv_collect?.setImageResource(resourceId)
                 itemView.setOnClickListener{
                     listener?.invoke(dataInfo)
@@ -82,11 +98,17 @@ class PublicNumberListAdapter(val context: Context, val viewModel: BaseViewModel
                         LoginActivity.start(context as Activity)
                     }else{
                         if (dataInfo.collect){
-                            viewModel.unCollectArtical(dataInfo.id)
-                            iv_collect?.setImageResource(R.mipmap.artical_discollected)
+                            if (isCollectionAdapter){
+                                viewModel.unCollectMyArtical(dataInfo)
+                            }else {
+                                viewModel.unCollectArtical(dataInfo)
+                                iv_collect?.setImageResource(R.mipmap.artical_discollected)
+                                dataInfo.collect = false
+                            }
                         }else{
-                            viewModel.collectArtical(dataInfo.id)
+                            viewModel.collectArtical(dataInfo)
                             iv_collect?.setImageResource(R.mipmap.artical_collected)
+                            dataInfo.collect = true
                         }
                     }
                 }

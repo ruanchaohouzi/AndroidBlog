@@ -112,6 +112,7 @@ class KnowledgeChildListFragment: BaseFragment() {
         viewModel?.collectErrInfo?.observe(this, Observer {
             it?.let {
                 Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
+                listAdapter.notifyDataSetChanged()
             }
         })
 

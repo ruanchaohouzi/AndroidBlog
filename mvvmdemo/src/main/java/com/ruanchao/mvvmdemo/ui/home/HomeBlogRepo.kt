@@ -6,9 +6,10 @@ import com.ruanchao.mvvmdemo.bean.Projects
 import com.ruanchao.mvvmdemo.net.WanAndroidApi
 import com.ruanchao.mvvmdemo.bean.BlogContent
 import com.ruanchao.mvvmdemo.db.BlogContentDao
+import com.ruanchao.mvvmdemo.ui.collection.CollectionRepo
 import io.reactivex.Observable
 
-class HomeBlogRepo(private val remote: WanAndroidApi, private val local: BlogContentDao){
+class HomeBlogRepo(private val remote: WanAndroidApi, private val local: BlogContentDao): CollectionRepo(remote){
 
 
     fun getAllProjectByPageFormRemote(page: Int): Observable<BaseNetBean<Projects>> {

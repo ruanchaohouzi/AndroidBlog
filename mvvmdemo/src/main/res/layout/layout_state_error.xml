@@ -18,6 +18,7 @@
             android:layout_marginTop="20dp"
             android:text="重新加载"
             android:layout_below="@id/tv_error_text"
+            android:background="@drawable/selector_login_signin_button"
             android:layout_centerHorizontal="true"
     />
 

@@ -26,6 +26,7 @@ import com.ruanchao.mvvmdemo.databinding.HomeBlogFragmentBinding
 import com.ruanchao.mvvmdemo.ui.base.BaseFragment
 import com.ruanchao.mvvmdemo.utils.obtainViewModel
 import com.ruanchao.mvvmdemo.utils.setVisible
+import com.ruanchao.mvvmdemo.view.MultiStateView
 import com.ruanchao.mvvmdemo.view.MultiStateView.VIEW_STATE_CONTENT
 import com.ruanchao.mvvmdemo.view.MultiStateView.VIEW_STATE_ERROR
 import kotlinx.android.synthetic.main.home_blog_fragment.*
@@ -49,8 +50,6 @@ class HomeBlogFragment: BaseFragment() {
     override fun reload() {
         dataBindingView.viewModel?.getHomeData(mCurrentPage)
     }
-
-    fun getHomeDataList() = homeDataList
 
     override fun initData() {
         initStatuBar()
@@ -114,6 +113,13 @@ class HomeBlogFragment: BaseFragment() {
                 }
             }
         })
+
+        dataBindingView.viewModel?.collectErrInfo?.observe(this, Observer {
+            it?.let {
+                mBlogHomeAdapter?.notifyDataSetChanged()
+                Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     private fun loadData(page: Int) {
@@ -133,7 +139,7 @@ class HomeBlogFragment: BaseFragment() {
         projectRecyclerView.run {
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
             adapter = mBlogHomeAdapter
-            this.addItemDecoration(dividerItemDecoration)
+            addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         }
         mBlogHomeAdapter?.setOnItemClickListener {
             p ->

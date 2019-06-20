@@ -1,26 +1,28 @@
 package com.ruanchao.mvvmdemo.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.daimajia.slider.library.SliderLayout
-import com.ruanchao.mvvmdemo.bean.HomeData
-import com.ruanchao.mvvmdemo.bean.ProjectInfo
 import com.daimajia.slider.library.SliderTypes.BaseSliderView
 import androidx.recyclerview.widget.RecyclerView
 import com.daimajia.slider.library.SliderTypes.TextSliderView
 import com.daimajia.slider.library.Tricks.ViewPagerEx
-import com.ruanchao.mvvmdemo.bean.BannerInfo
 import com.ruanchao.mvvmdemo.R
+import com.ruanchao.mvvmdemo.bean.*
 import com.ruanchao.mvvmdemo.databinding.HomeRecyclerItemLayoutBinding
 import com.ruanchao.mvvmdemo.ui.home.BlogDetailActivity
 import com.ruanchao.mvvmdemo.ui.home.HomeBlogViewModel
+import com.ruanchao.mvvmdemo.ui.login.LoginActivity
+import kotlinx.android.synthetic.main.home_recycler_item_layout.view.*
 
 
 class HomeBlogAdapter constructor(var mHomeDataList: MutableList<HomeData>, val mContext: Context,
-                                  viewModel: HomeBlogViewModel?): RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
+                                  val viewModel: HomeBlogViewModel?): RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     fun addHomeDataList(data: MutableList<HomeData>){
         mHomeDataList.addAll(data)
@@ -50,9 +52,9 @@ class HomeBlogAdapter constructor(var mHomeDataList: MutableList<HomeData>, val 
     override fun onBindViewHolder(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
 
         if (viewHolder is ProjectViewHolder) {
-            val projectInfo: ProjectInfo = mHomeDataList[position].itemValue as ProjectInfo
-            viewHolder.bind(projectInfo){
-                listener?.invoke(projectInfo)
+            val dataInfo: DataInfo = mHomeDataList[position].itemValue as DataInfo
+            viewHolder.bind(dataInfo){
+                listener?.invoke(dataInfo)
             }
         }else if (viewHolder is BannerViewHolder){
             val banners: List<BannerInfo> = mHomeDataList[position].itemValue as List<BannerInfo>
@@ -86,13 +88,30 @@ class HomeBlogAdapter constructor(var mHomeDataList: MutableList<HomeData>, val 
         return if(position == mHomeDataList.size) HomeData.VIEW_TYPE_FOOT else mHomeDataList[position].itemType
     }
 
-    class ProjectViewHolder(var dataBinding: HomeRecyclerItemLayoutBinding)
+    inner class ProjectViewHolder(var dataBinding: HomeRecyclerItemLayoutBinding)
         : RecyclerView.ViewHolder(dataBinding.root) {
-        fun bind(projectInfo: ProjectInfo, listener: ((ProjectInfo) -> Unit)?) {
+        fun bind(dataInfo: DataInfo, listener: ((DataInfo) -> Unit)?) {
             //进行数据绑定
-            dataBinding.projectInfo = projectInfo
+            dataBinding.dataInfo = dataInfo
             dataBinding.root.setOnClickListener{
-                listener?.invoke(projectInfo)
+                listener?.invoke(dataInfo)
+            }
+            dataBinding.root.iv_collect.setOnClickListener {
+                if (UserInfo.getInstance()?.user == null){
+                    Toast.makeText(mContext, "请先登录", Toast.LENGTH_LONG).show()
+                    LoginActivity.start(mContext as Activity)
+                }else{
+                    if (dataInfo.collect){
+                        viewModel?.unCollectArtical(dataInfo)
+                        dataBinding.root.iv_collect?.setImageResource(R.mipmap.artical_discollected)
+                        dataInfo.collect = false
+                    }else{
+                        viewModel?.collectArtical(dataInfo)
+                        dataBinding.root.iv_collect?.setImageResource(R.mipmap.artical_collected)
+                        dataInfo.collect = true
+                    }
+//                    notifyDataSetChanged()
+                }
             }
         }
     }
@@ -139,9 +158,9 @@ class HomeBlogAdapter constructor(var mHomeDataList: MutableList<HomeData>, val 
         }
     }
 
-    private var listener: ((ProjectInfo) -> Unit)? = null
+    private var listener: ((DataInfo) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: ((ProjectInfo) -> Unit)){
+    fun setOnItemClickListener(listener: ((DataInfo) -> Unit)){
         this.listener = listener
     }
 

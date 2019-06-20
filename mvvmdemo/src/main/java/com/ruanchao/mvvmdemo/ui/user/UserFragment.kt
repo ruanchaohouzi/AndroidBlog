@@ -1,4 +1,4 @@
-package com.ruanchao.mvvmdemo.ui.login
+package com.ruanchao.mvvmdemo.ui.user
 
 import android.content.Context
 import android.os.Bundle
@@ -11,8 +11,9 @@ import com.ruanchao.mvvmdemo.bean.UserInfo
 import com.ruanchao.mvvmdemo.databinding.UserFragmentLayoutBinding
 import com.ruanchao.mvvmdemo.event.LoginUserMsg
 import com.ruanchao.mvvmdemo.ui.base.BaseFragment
+import com.ruanchao.mvvmdemo.ui.login.LoginActivity
+import com.ruanchao.mvvmdemo.ui.login.LoginViewModel
 import com.ruanchao.mvvmdemo.utils.obtainViewModel
-import com.ruanchao.mvvmdemo.utils.set
 import com.ruanchao.mvvmdemo.utils.toast
 import kotlinx.android.synthetic.main.user_fragment_layout.*
 import org.greenrobot.eventbus.EventBus
@@ -23,6 +24,11 @@ class UserFragment: BaseFragment() {
 
     lateinit var viewBinding: UserFragmentLayoutBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
+    }
+
     override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         viewBinding = UserFragmentLayoutBinding.inflate(inflater, container, false)
@@ -30,8 +36,6 @@ class UserFragment: BaseFragment() {
                 viewModel = (activity as AppCompatActivity).obtainViewModel(LoginViewModel::class.java)
                 lifecycleOwner = this@UserFragment
             }
-        EventBus.getDefault().register(this)
-
         return viewBinding.root
 
     }
@@ -61,27 +65,18 @@ class UserFragment: BaseFragment() {
                 closeLoadingDialog()
             }
         })
-
-        viewBinding.viewModel?.isLogout?.observe(this, Observer {
-            it?.let { logout ->
-                //清空，避免多次重复回调弹出toast
-                viewBinding.viewModel?.isLogout!!.set(null)
-                if (logout){
-                    toast("退出成功")
-                    tv_userName.text = "请登录"
-                    btn_login.text = "登录"
-                }else{
-                    toast("退出失败")
-                }
-            }
-
-        })
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(userMsg: LoginUserMsg){
-        tv_userName.text = userMsg.user?.username
-        btn_login.text = "退出登录"
+        if (userMsg.user == null){
+            toast("退出成功")
+            tv_userName.text = "请登录"
+            btn_login.text = "登录"
+        }else {
+            tv_userName.text = userMsg.user?.username
+            btn_login.text = "退出登录"
+        }
     }
 
     override fun onDestroy() {

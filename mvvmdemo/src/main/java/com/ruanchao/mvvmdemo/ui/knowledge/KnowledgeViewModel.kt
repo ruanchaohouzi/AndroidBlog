@@ -1,17 +1,16 @@
 package com.ruanchao.mvvmdemo.ui.knowledge
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.ruanchao.mvvmdemo.bean.BaseNetBean
 import com.ruanchao.mvvmdemo.bean.KnowledgeInfo
 import com.ruanchao.mvvmdemo.bean.PublicNumerArticalInfo
-import com.ruanchao.mvvmdemo.ui.login.BaseViewModel
+import com.ruanchao.mvvmdemo.ui.collection.CollectionViewModel
 import com.ruanchao.mvvmdemo.utils.schedule
 import com.ruanchao.mvvmdemo.utils.set
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
-class KnowledgeViewModel(val remote: KnowledgeRepo): BaseViewModel(remote) {
+class KnowledgeViewModel(val remote: KnowledgeRepo): CollectionViewModel(remote) {
 
     var isKnowledgeChildDataListLoading = false
 

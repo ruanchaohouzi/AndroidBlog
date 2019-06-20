@@ -1,12 +1,11 @@
 package com.ruanchao.mvvmdemo.ui.home
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ruanchao.mvvmdemo.bean.*
-import com.ruanchao.mvvmdemo.utils.schedule
+import com.ruanchao.mvvmdemo.ui.collection.CollectionViewModel
 import com.ruanchao.mvvmdemo.utils.set
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,7 +16,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 
-class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
+class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : CollectionViewModel(homeBlogRepo) {
 
     private val _TAG: String = "HomeBlogViewModel"
 
@@ -63,7 +62,7 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
             getBannerList,
             BiFunction<BaseNetBean<Projects>, BaseNetBean<List<BannerInfo>>, MutableList<HomeData>> { projectsBaseNetBean, listBaseNetBean ->
                 val homeDatas: MutableList<HomeData> = mutableListOf()
-                val projectList: List<ProjectInfo>? = projectsBaseNetBean.data?.datas
+                val projectList: List<DataInfo>? = projectsBaseNetBean.data?.datas
                 projectList?.forEach { item ->
                     homeDatas.add(HomeData(HomeData.VIEW_TYPE_CONTENT, item))
                 }
@@ -123,7 +122,7 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
 
                 override fun onNext(data: BaseNetBean<Projects>) {
                     val homeDatas: MutableList<HomeData> = mutableListOf()
-                    val projectList: List<ProjectInfo>? = data.data?.datas
+                    val projectList: List<DataInfo>? = data.data?.datas
                     projectList?.forEach { item ->
                         homeDatas.add(HomeData(HomeData.VIEW_TYPE_CONTENT, item))
                     }
@@ -153,7 +152,7 @@ class HomeBlogViewModel(private val homeBlogRepo: HomeBlogRepo) : ViewModel() {
 
             } else if (jsonValue["itemType"] == HomeData.VIEW_TYPE_CONTENT) {
 
-                val projectInfo = gson.fromJson<ProjectInfo>(jsonValue["itemValue"].toString(), ProjectInfo::class.java)
+                val projectInfo = gson.fromJson<DataInfo>(jsonValue["itemValue"].toString(), DataInfo::class.java)
                 homeDataList.add(HomeData(HomeData.VIEW_TYPE_CONTENT, projectInfo))
             }
         }

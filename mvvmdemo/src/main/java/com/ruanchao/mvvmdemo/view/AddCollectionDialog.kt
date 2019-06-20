@@ -9,10 +9,18 @@ import androidx.fragment.app.DialogFragment
 import com.ruanchao.mvvmdemo.R
 import android.view.WindowManager
 import android.view.Gravity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import com.ruanchao.mvvmdemo.databinding.AddCollectionDialogLayoutBinding
+import com.ruanchao.mvvmdemo.ui.collection.CollectionViewModel
 import com.ruanchao.mvvmdemo.utils.getDisplayWidth
+import com.ruanchao.mvvmdemo.utils.obtainViewModel
+import com.ruanchao.mvvmdemo.utils.toast
 
 
-class LoadingDialog : DialogFragment() {
+class AddCollectionDialog : DialogFragment() {
+
+    var viewBinding: AddCollectionDialogLayoutBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +28,12 @@ class LoadingDialog : DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater.inflate(R.layout.loading_dialog_layout, container, false)
+
+        viewBinding = AddCollectionDialogLayoutBinding.inflate(inflater, container, false)
+            .apply {
+                viewModel = (activity as AppCompatActivity).obtainViewModel(CollectionViewModel::class.java)
+                lifecycleOwner = this@AddCollectionDialog
+            }
 
         //Do something
         // 设置宽度为屏宽、靠近屏幕底部。
@@ -28,14 +41,25 @@ class LoadingDialog : DialogFragment() {
        // 设置了窗口的背景色为透明，这一步是必须的；
 //        window!!.setBackgroundDrawableResource(R.color.transparent)
         //设置了窗口的 Pading 值全部为0，这一步也是必须的，内容不能填充全部宽度和高度。
-//        window.decorView.setPadding(0, 5, 0, 5)
+//        window!!.decorView.setPadding(0, 5, 0, 5)
         val wlp = window!!.attributes
         wlp.gravity = Gravity.CENTER
 //        wlp.width = getDisplayWidth(activity as Context) - 100
 //        wlp.height = WindowManager.LayoutParams.WRAP_CONTENT
         window.attributes = wlp
-        dialog?.setCanceledOnTouchOutside(false)
+//        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-        return view
+        dialog?.setCanceledOnTouchOutside(false)
+        return viewBinding?.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        viewBinding?.viewModel?.collectErrInfo?.observe(this, Observer {
+            it?.let {
+                toast(it)
+            }
+        })
     }
 }

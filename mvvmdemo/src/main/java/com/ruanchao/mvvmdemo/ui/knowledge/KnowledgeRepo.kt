@@ -1,9 +1,9 @@
 package com.ruanchao.mvvmdemo.ui.knowledge
 
 import com.ruanchao.mvvmdemo.net.WanAndroidApi
-import com.ruanchao.mvvmdemo.ui.login.BaseRepo
+import com.ruanchao.mvvmdemo.ui.collection.CollectionRepo
 
-class KnowledgeRepo(val remote: WanAndroidApi): BaseRepo(remote){
+class KnowledgeRepo(val remote: WanAndroidApi): CollectionRepo(remote){
 
     fun getKnowledgeList() = remote.getKnowledgeList()
 

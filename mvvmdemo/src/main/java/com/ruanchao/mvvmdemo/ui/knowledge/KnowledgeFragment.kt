@@ -54,6 +54,8 @@ class KnowledgeFragment: BaseFragment() {
     }
 
     override fun reload() {
+        stateView.viewState = MultiStateView.VIEW_STATE_LOADING
+        mViewModel.getKnowledgeList()
     }
 
 }

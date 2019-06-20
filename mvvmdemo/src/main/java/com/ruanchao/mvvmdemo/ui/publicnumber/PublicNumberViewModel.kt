@@ -5,13 +5,13 @@ import android.util.Log
 import com.ruanchao.mvvmdemo.bean.BaseNetBean
 import com.ruanchao.mvvmdemo.bean.PublicNumberInfo
 import com.ruanchao.mvvmdemo.bean.PublicNumerArticalInfo
-import com.ruanchao.mvvmdemo.ui.login.BaseViewModel
+import com.ruanchao.mvvmdemo.ui.collection.CollectionViewModel
 import com.ruanchao.mvvmdemo.utils.schedule
 import com.ruanchao.mvvmdemo.utils.set
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
-class PublicNumberViewModel(val repo: PublicNumberRepo): BaseViewModel(repo){
+class PublicNumberViewModel(val repo: PublicNumberRepo): CollectionViewModel(repo){
 
     var publicNumberInfos = MutableLiveData<List<PublicNumberInfo>>()
     var error = MutableLiveData<String>().apply {

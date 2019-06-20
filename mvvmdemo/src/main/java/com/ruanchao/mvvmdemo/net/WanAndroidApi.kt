@@ -43,17 +43,23 @@ interface WanAndroidApi{
     fun logout():Observable<BaseNetBean<Any>>
 
     @GET("/lg/collect/list/{page}/json")
-    fun getCollectList(@Path("page") page: Int):Observable<BaseNetBean<CollectInfo>>
+    fun getCollectList(@Path("page") page: Int):Observable<BaseNetBean<PublicNumerArticalInfo>>
 
     @POST("/lg/collect/{id}/json")
     fun collectArtical(@Path("id") id: Int):Observable<BaseNetBean<Any>>
 
-    @POST("lg/uncollect_originId/{id}/json")
+    //收藏外部文章
+    @FormUrlEncoded
+    @POST("/lg/collect/add/json")
+    fun collectExternalArtical(@Field("title") title:String,
+                               @Field("author") author:String,
+                               @Field("link") link:String):Observable<BaseNetBean<DataInfo>>
+
+            @POST("/lg/uncollect_originId/{id}/json")
     fun unCollectArtical(@Path("id") id: Int):Observable<BaseNetBean<Any>>
 
-
-
-
-
+    @FormUrlEncoded
+    @POST("/lg/uncollect/{id}/json")
+    fun unCollectMyArtical(@Path("id") id: Int, @Field("originId") originId:Int):Observable<BaseNetBean<Any>>
 
 }

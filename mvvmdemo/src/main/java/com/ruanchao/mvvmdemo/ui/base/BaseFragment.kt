@@ -30,6 +30,7 @@ abstract class BaseFragment: Fragment() {
         var stateViewRoot: MultiStateView? = rootView.findViewById(R.id.stateView)
         val errView = stateViewRoot?.getView(MultiStateView.VIEW_STATE_ERROR)
         errView?.findViewById<Button>(R.id.btn_reload)?.setOnClickListener{
+            stateView.viewState = MultiStateView.VIEW_STATE_LOADING
             reload()
         }
         initData()

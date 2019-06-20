@@ -43,10 +43,6 @@ class LoginViewModel(private val repo: LoginRepo): ViewModel() {
         value = false
     }
 
-    var isLogout = MutableLiveData<Boolean>().apply {
-        value = null
-    }
-
     val TAG = LoginViewModel::class.java.simpleName
 
 

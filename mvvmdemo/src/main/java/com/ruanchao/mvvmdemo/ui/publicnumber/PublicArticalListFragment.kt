@@ -41,6 +41,11 @@ class PublicArticalListFragment: BaseFragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
+    }
+
     override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         viewModel = obtainViewModel(this,PublicNumberViewModel::class.java)
         val inflate = PublicNumberArticalListFragmentLayoutBinding
@@ -49,7 +54,6 @@ class PublicArticalListFragment: BaseFragment() {
                 lifecycleOwner = this@PublicArticalListFragment
             }
         inflate.viewModel = viewModel
-        EventBus.getDefault().register(this)
         return inflate.root
     }
 
@@ -115,6 +119,7 @@ class PublicArticalListFragment: BaseFragment() {
 
         viewModel?.collectErrInfo?.observe(this, Observer {
             it?.let {
+                listAdapter.notifyDataSetChanged()
                 Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
             }
         })
