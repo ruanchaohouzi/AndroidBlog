@@ -28,3 +28,11 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+task("testTask2").doLast {
+    System.out.println("========================");
+    System.out.println("这是第二个插件!");
+    System.out.println("========================");
+    System.out.println("读取外界传递到gradle插件的参数:")
+
+}

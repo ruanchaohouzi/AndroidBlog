@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable name="viewModel" type="com.ruanchao.androidblog.ui.publicnumber.PublicNumberViewModel"/>
+    </data>
+    <com.ruanchao.androidblog.view.MultiStateView
+            android:id="@+id/stateView"
+            style="@style/StateView">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/srf_artical_refresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:refreshing="@{viewModel.isRefreshing}">
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/public_number_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
+    </com.ruanchao.androidblog.view.MultiStateView>
+
+</layout>

@@ -12,7 +12,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-        <Toolbar
+        <androidx.appcompat.widget.Toolbar
                 android:id="@+id/mHomeToolbar"
                 android:background="@color/color_translucent"
                 android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                         android:paddingRight="10dp"
                 />
             </RelativeLayout>
-        </Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
     </FrameLayout>
 
