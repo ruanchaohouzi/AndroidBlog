@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -54,6 +55,9 @@ class CollectionFragment : BaseFragment() {
     override fun initData() {
         StatusBarUtil.immersive(activity as Activity, activity!!.getColor(R.color.public_number_tab_bg))
         StatusBarUtil.setPaddingSmart(activity as Activity, toolbar)
+        val emptyView = stateView.getView(MultiStateView.VIEW_STATE_EMPTY)
+        emptyView?.findViewById<TextView>(R.id.tv_state_empty_text)?.text = "您还没有收藏的博客\n请点击博客列表❤️进行收藏\n或者点击右上角+手动添加收藏页面"
+
         val listAdapter = PublicNumberListAdapter(activity as Context, vm) {
             BlogDetailActivity.start(activity as Context, it.link)
         }

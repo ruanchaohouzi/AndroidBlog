@@ -31,6 +31,7 @@ class BlogDetailActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        //由于Android P 版本限制http通信，需要增加配置允许http通信
         val url = intent.getStringExtra(BLOG_DETAIL_URL)
         Log.i("BlogDetailActivity", url)
         AgentWeb.with(this)
