@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ruanchao.mvpframe.utils.StatusBarUtil
 import com.ruanchao.androidblog.R
 import com.ruanchao.androidblog.adapter.PublicNumberListAdapter
+import com.ruanchao.androidblog.bean.DataInfo
 import com.ruanchao.androidblog.bean.UserInfo
 import com.ruanchao.androidblog.databinding.CollectionFragmentBinding
+import com.ruanchao.androidblog.event.CollectionMsg
 import com.ruanchao.androidblog.event.LoginUserMsg
 import com.ruanchao.androidblog.ui.base.BaseFragment
 import com.ruanchao.androidblog.ui.home.BlogDetailActivity
@@ -37,6 +39,7 @@ class CollectionFragment : BaseFragment() {
     lateinit var vm: CollectionViewModel
     var mCurrentPage: Int = 0
     var addCollectionDialog: AddCollectionDialog? = null
+    var mListAdapter:PublicNumberListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,17 +61,17 @@ class CollectionFragment : BaseFragment() {
         val emptyView = stateView.getView(MultiStateView.VIEW_STATE_EMPTY)
         emptyView?.findViewById<TextView>(R.id.tv_state_empty_text)?.text = "您还没有收藏的博客\n请点击博客列表❤️进行收藏\n或者点击右上角+手动添加收藏页面"
 
-        val listAdapter = PublicNumberListAdapter(activity as Context, vm) {
+        mListAdapter = PublicNumberListAdapter(activity as Context, vm) {
             BlogDetailActivity.start(activity as Context, it.link)
         }
-        listAdapter.isCollectionAdapter = true
+        mListAdapter?.isCollectionAdapter = true
         srf_artical_refresh?.setOnRefreshListener {
             mCurrentPage = 0
             loadData()
         }
         public_number_list?.run {
             layoutManager = LinearLayoutManager(activity)
-            adapter = listAdapter
+            adapter = mListAdapter
             addItemDecoration(
                 DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
             )
@@ -115,7 +118,7 @@ class CollectionFragment : BaseFragment() {
                     if (it.size == 0) {
                         stateView.viewState = MultiStateView.VIEW_STATE_EMPTY
                     } else {
-                        listAdapter.resetDatas(it)
+                        mListAdapter?.resetDatas(it)
                         stateView.viewState = MultiStateView.VIEW_STATE_CONTENT
                         isShowCollectContent(true)
                     }
@@ -124,7 +127,7 @@ class CollectionFragment : BaseFragment() {
                         toast("没有更多数据")
                         mCurrentPage--
                     } else {
-                        listAdapter.addDatas(it)
+                        mListAdapter?.addDatas(it)
                     }
                 }
             }
@@ -145,18 +148,25 @@ class CollectionFragment : BaseFragment() {
 
         vm?.addCollectionInfo?.observe(this, Observer {
             it?.let {
-                listAdapter.addCollectedData(it)
                 addCollectionDialog?.dismiss()
             }
         })
 
-        vm?.unCollectInfo.observe(this, Observer {
-            it?.let {
-                listAdapter.removeUnCollectedData(it)
-            }
-        })
-
         loadData()
+    }
+
+    private fun handlerCancerCollection(it: DataInfo) {
+        mListAdapter?.removeUnCollectedData(it)
+        if (mListAdapter?.datas?.size == 0) {
+            stateView.viewState = MultiStateView.VIEW_STATE_EMPTY
+        }
+    }
+
+    private fun handlerAddCollection(it: DataInfo){
+        if (stateView.viewState != MultiStateView.VIEW_STATE_CONTENT) {
+            stateView.viewState = MultiStateView.VIEW_STATE_CONTENT
+        }
+        mListAdapter?.addCollectedData(it)
     }
 
     private fun loadData() {
@@ -185,6 +195,17 @@ class CollectionFragment : BaseFragment() {
         }else {
             //重新登录后
             loadData()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(collectionMsg: CollectionMsg){
+        collectionMsg?.let {
+            if (it.isCollected){
+                handlerAddCollection(it.dataInfo!!)
+            }else{
+                handlerCancerCollection(it.dataInfo!!)
+            }
         }
     }
 

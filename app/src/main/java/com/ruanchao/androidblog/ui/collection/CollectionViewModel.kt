@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import com.ruanchao.androidblog.bean.BaseNetBean
 import com.ruanchao.androidblog.bean.DataInfo
 import com.ruanchao.androidblog.bean.PublicNumerArticalInfo
+import com.ruanchao.androidblog.event.CollectionMsg
 import com.ruanchao.androidblog.utils.isHttpUrl
 import com.ruanchao.androidblog.utils.schedule
 import com.ruanchao.androidblog.utils.set
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import org.greenrobot.eventbus.EventBus
 
 open class CollectionViewModel(private val repo: CollectionRepo): ViewModel() {
 
@@ -60,6 +62,8 @@ open class CollectionViewModel(private val repo: CollectionRepo): ViewModel() {
                 }
 
                 override fun onNext(t: BaseNetBean<Any>) {
+                    //通知收藏页面进行数据的刷新
+                    EventBus.getDefault().post(CollectionMsg(true,dataInfo))
                 }
 
                 override fun onError(e: Throwable) {
@@ -83,6 +87,8 @@ open class CollectionViewModel(private val repo: CollectionRepo): ViewModel() {
 
                 override fun onNext(t: BaseNetBean<Any>) {
                     unCollectInfo.set(dataInfo)
+                    //通知收藏页面进行数据的刷新
+                    EventBus.getDefault().post(CollectionMsg(false,dataInfo))
                 }
 
                 override fun onError(e: Throwable) {
@@ -107,6 +113,8 @@ open class CollectionViewModel(private val repo: CollectionRepo): ViewModel() {
 
                 override fun onNext(t: BaseNetBean<Any>) {
                     unCollectInfo.set(dataInfo)
+                    //通知收藏页面进行数据的刷新
+                    EventBus.getDefault().post(CollectionMsg(false,dataInfo))
                 }
 
                 override fun onError(e: Throwable) {
@@ -176,6 +184,8 @@ open class CollectionViewModel(private val repo: CollectionRepo): ViewModel() {
                         title.value = null
                         author.value = null
                         link.value = null
+                        //通知收藏页面进行数据的刷新
+                        EventBus.getDefault().post(CollectionMsg(true,t.data))
                     }else{
                         collectErrInfo.set(t.errorMsg)
                     }
