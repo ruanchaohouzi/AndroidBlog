@@ -9,7 +9,7 @@ import com.ruanchao.androidblog.bean.Children
 import com.ruanchao.androidblog.bean.KnowledgeInfo
 import com.ruanchao.androidblog.ui.knowledge.ChildKnowledgeActivity
 
-class KnowledgeAdapter: BaseQuickAdapter<KnowledgeInfo, BaseViewHolder>(R.layout.rv_item_knowledge){
+class KnowledgeAdapter(val recyclerViewPool: RecyclerView.RecycledViewPool) : BaseQuickAdapter<KnowledgeInfo, BaseViewHolder>(R.layout.rv_item_knowledge){
 
     override fun convert(helper: BaseViewHolder?, item: KnowledgeInfo?) {
         helper?.setText(R.id.tv_name, item?.name)
@@ -26,6 +26,7 @@ class KnowledgeAdapter: BaseQuickAdapter<KnowledgeInfo, BaseViewHolder>(R.layout
             layoutManager = flexboxLayoutManager
             adapter = mKnowledgeChildAdapter
         }
+//        knowledegChildRecycler?.setRecycledViewPool(recyclerViewPool)
         mKnowledgeChildAdapter.setNewData(item?.children)
 
     }
@@ -37,7 +38,6 @@ class KnowledgeAdapter: BaseQuickAdapter<KnowledgeInfo, BaseViewHolder>(R.layout
                 ChildKnowledgeActivity.start(mContext, item?.id, item?.name)
             }
         }
-
     }
 
 }

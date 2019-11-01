@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ruanchao.mvpframe.utils.StatusBarUtil
 import com.ruanchao.androidblog.R
 import com.ruanchao.androidblog.adapter.KnowledgeAdapter
@@ -31,12 +32,14 @@ class KnowledgeFragment: BaseFragment() {
         StatusBarUtil.immersive(activity as Activity, activity!!.getColor(R.color.public_number_tab_bg))
         StatusBarUtil.setPaddingSmart(activity as Activity, mKnowledgeToolbar)
         mViewModel = obtainViewModel(this, KnowledgeViewModel::class.java)
-        mKnowledgeAdapter = KnowledgeAdapter()
+        val recyclerViewPool = RecyclerView.RecycledViewPool()
+        mKnowledgeAdapter = KnowledgeAdapter(recyclerViewPool)
         mKnowledgeAdapter.setEnableLoadMore(false)
         with(knowledgeRecyclerView){
             layoutManager = LinearLayoutManager(getContext())
             adapter = mKnowledgeAdapter
         }
+        knowledgeRecyclerView.setRecycledViewPool(recyclerViewPool)
         mViewModel.knowledgeInfoList.observe(this, Observer {
             it?.let {
                 mKnowledgeAdapter.setNewData(it)

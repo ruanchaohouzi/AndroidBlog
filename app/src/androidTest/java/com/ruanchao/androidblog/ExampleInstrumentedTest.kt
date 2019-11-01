@@ -18,3 +18,19 @@ class ExampleInstrumentedTest {
 
     }
 }
+
+
+class Single{
+    companion object {
+        val instance:Single by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+            Single()
+        }
+    }
+
+    fun test(){
+        var list: MutableList<Int> = mutableListOf(1,2,3,4)
+        val fold = list.fold(4) { totle, next ->
+            totle + next
+        }
+    }
+}
