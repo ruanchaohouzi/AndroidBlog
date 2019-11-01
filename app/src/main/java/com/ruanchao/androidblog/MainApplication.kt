@@ -15,7 +15,6 @@ class MainApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.i("MainApplication","onCreate")
         context = this
     }
 
