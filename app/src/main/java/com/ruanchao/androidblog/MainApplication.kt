@@ -2,6 +2,7 @@ package com.ruanchao.androidblog
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
