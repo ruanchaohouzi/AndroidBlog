@@ -28,11 +28,11 @@ class MainActivity : AppCompatActivity() {
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         supportActionBar?.hide()
         //第一次进入，判断用户是否已经登录
-        val cookie = PreferencesUtil.getSet(PreferencesUtil.COOKIE_KEY)
-        if (cookie != null){
-            val loginViewModel = obtainViewModel(LoginViewModel::class.java)
-            loginViewModel.getUserInfo()
-        }
+//        val cookie = PreferencesUtil.getSet(PreferencesUtil.COOKIE_KEY)
+//        if (cookie != null){
+//            val loginViewModel = obtainViewModel(LoginViewModel::class.java)
+//            loginViewModel.getUserInfo()
+//        }
 
         initTab()
     }

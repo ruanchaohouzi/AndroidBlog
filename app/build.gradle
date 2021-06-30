@@ -32,6 +32,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
 }
 
@@ -53,13 +60,21 @@ dependencies {
     //autodispose
     implementation 'com.uber.autodispose:autodispose:0.8.0'
     implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.8.0'
-    //retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    implementation 'com.google.code.gson:gson:2.8.2'
+
     implementation 'com.facebook.stetho:stetho:1.5.0'
+
+    /* 支持协程 */
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
+    /* retrofit */
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+
+    /* okhttp */
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
 
     //room (local)
     implementation 'androidx.room:room-runtime:2.0.0'
@@ -70,8 +85,11 @@ dependencies {
     implementation "org.koin:koin-android-viewmodel:1.0.2"
 
     //ViewModel
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation 'androidx.activity:activity-ktx:1.1.0'
+
     kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
 
     //glide
